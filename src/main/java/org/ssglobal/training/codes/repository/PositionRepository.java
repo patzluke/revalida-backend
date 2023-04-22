@@ -27,8 +27,8 @@ public interface PositionRepository {
 	})
 	public Position getPosbyId(Integer positionId);
 	
-	@Delete(value = "delete from positions where positon_id = #{positionId}")
-	public boolean deletePosById(Integer depId);
+	@Delete(value = "delete from positions where position_id = #{positionId}")
+	public boolean deletePosById(Integer positionId);
 	
 	@Update(value = """
 			update positions set position_name = #{positionName} where position_id = #{positionId}
