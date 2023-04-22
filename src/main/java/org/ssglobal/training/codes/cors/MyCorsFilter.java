@@ -73,7 +73,7 @@ public class MyCorsFilter implements ContainerResponseFilter, ContainerRequestFi
 			
 			if (new Date().getTime() < tokenExpiresAt.getTime() && userTokenRepositoryImpl().isUserTokenExistsImpl(token)) {
 				return true;
-			} else if (new Date().getTime() < tokenExpiresAt.getTime()){
+			} else if (new Date().getTime() > tokenExpiresAt.getTime()){
 				userTokenRepositoryImpl().deleteUserTokenImpl(userId);
 			}
 		} catch (JsonMappingException e) {

@@ -16,7 +16,7 @@ public interface UserTokenRepository {
 	@Update(value = "update user_tokens set token = #{token} where user_id = #{userId}")
 	public boolean updateUserToken(Map<String, Object> parameters);
 	
-	@Delete(value = "delete from users where employee_id = #{userId}")
+	@Delete(value = "delete from user_tokens where user_id = #{userId}")
 	public boolean deleteUserToken(Integer userId);
 	
 	@Select(value = "select * from user_tokens where user_id = #{userId}")
