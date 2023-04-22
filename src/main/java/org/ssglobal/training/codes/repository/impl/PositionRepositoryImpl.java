@@ -55,12 +55,12 @@ public class PositionRepositoryImpl {
 		return null;
 	}
 	
-	public boolean deletePosByIdImpl(Integer depId) {
+	public boolean deletePosByIdImpl(Integer positionId) {
 		SqlSession session = null;
 		try {
 			session = ssf.openSession();
 
-			session.delete("deletePosById", depId);
+			session.delete("deletePosById", positionId);
 			
 			session.commit();
 			session.close();
@@ -81,7 +81,8 @@ public class PositionRepositoryImpl {
 			
 			HashMap<String, Object> dataMap = new HashMap<>();
 			dataMap.put("positionName", currentPos.getPositionName());
-			
+			dataMap.put("positionId", currentPos.getPositionId());
+
 			session.update("updatePosition", dataMap);
 			
 			session.commit();

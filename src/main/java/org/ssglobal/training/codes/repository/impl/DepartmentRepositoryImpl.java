@@ -83,7 +83,8 @@ public class DepartmentRepositoryImpl {
 			
 			HashMap<String, Object> dataMap = new HashMap<>();
 			dataMap.put("departmentName", currentDep.getDepartmentName());
-			
+			dataMap.put("departmentId", currentDep.getDepartmentId());
+
 			session.update("updateDepartment", dataMap);
 			
 			session.commit();

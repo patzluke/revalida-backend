@@ -88,7 +88,7 @@ public interface UserRepository {
 	
 	@Insert(value = """
 			insert into users(email, mobile_number, password, user_type, first_name, middle_name, last_name, dept_id, birth_date, gender, position_id)
-			values(#{email}, #{mobileNumber}, #{password}, #{userType}, #{firstName}, #{middleName}, #{lastName}, #{deptId}, #{birthDate}, #{gender}, #{positionId})
+			values(#{email}, #{mobileNumber}, #{password}, #{userType}, #{firstName}, #{middleName}, #{lastName}, #{departmentId}, #{birthDate}, #{gender}, #{positionId})
 			""")
 	public boolean inserUser();
 }
