@@ -16,8 +16,9 @@ public interface UserRepository {
 	@Select(value = """
 				select u.employee_id, u.email, u.mobile_number, u.user_type, u.first_name,
 				  	   u.middle_name, u.last_name, d.department_name, u.birth_date, u.gender,
-				  	   p.position_name, u.dept_id, u.position_id from users u inner join departments d on u.dept_id = d.department_id
-				  	    	   						inner join positions p on u.position_id = p.position_id
+				  	   p.position_name, u.dept_id, u.position_id from users u 
+				  	   inner join departments d on u.dept_id = d.department_id
+				  	   inner join positions p on u.position_id = p.position_id
 			""")
 	@Results(value = {
 			@Result(property = "employeeId", column = "employee_id"),
@@ -51,7 +52,14 @@ public interface UserRepository {
 	public List<User> selectAllUsers();
 	
 	
-	@Select(value = "select * from users where employee_id = #{employeeId}")
+	@Select(value = """
+			select u.employee_id, u.email, u.mobile_number, u.user_type, u.first_name,
+			 	   u.middle_name, u.last_name, d.department_name, u.birth_date, u.gender,
+			 	   p.position_name, u.dept_id, u.position_id from users u 
+			 	   inner join departments d on u.dept_id = d.department_id
+			  	   inner join positions p on u.position_id = p.position_id 
+			  	   where employee_id = #{employeeId}
+			""")
 	@Results(value = {
 			@Result(property = "employeeId", column = "employee_id"),
 			@Result(property = "email", column = "email"),
@@ -64,10 +72,15 @@ public interface UserRepository {
 			@Result(property = "birthDate", column = "birth_date"),
 			@Result(property = "gender", column = "gender"),
 			@Result(property = "positionId", column = "position_id"),
+			@Result(property = "departmentName", column = "department_name", javaType = String.class),
+			@Result(property = "positionName", column = "position_name", javaType = String.class),
 	})
 	public User getUserById(Integer employeeId);
 	
-	@Select(value = "select employee_id, email, user_type from users where email = #{email} and password = #{password}")
+	@Select(value = """
+			select employee_id, email, user_type from users 
+			where email = #{email} and password = #{password}
+			""")
 	@Results(value = {
 			@Result(property = "employeeId", column = "employee_id"),
 			@Result(property = "email", column = "email"),
