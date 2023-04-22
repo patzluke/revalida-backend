@@ -6,20 +6,20 @@ create database users;
 drop table if exists departments;
 create table departments (
 	department_id serial primary key,
-	department_name varchar(50)
+	department_name varchar(50) unique
 );
 
 drop table if exists positions;
 create table positions (
 	position_id serial primary key,
-	position_name varchar(50)
+	position_name varchar(50) unique
 );
 
 drop table if exists users;
 create table users (
     employee_id serial primary key,
-    email varchar(70),
-    mobile_number varchar(20),
+    email varchar(70) unique,
+    mobile_number varchar(20) unique,
     password varchar(70),
     user_type varchar(70),
     first_name varchar(70),

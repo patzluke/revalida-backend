@@ -70,8 +70,8 @@ public class UserService {
 		List<Object> userDetail = new ArrayList<>();
 		try {
 			User user = userRepositoryImpl().searchUserByEmailAndPassImpl(payload.getUsername(), payload.getPassword());
-			String token = generateToken(user.getEmployeeId(), user.getEmail());
 			if (user != null) {
+				String token = generateToken(user.getEmployeeId(), user.getEmail());
 				userDetail.add(token);
 				userDetail.add(user.getEmployeeId());
 				userDetail.add(user.getEmail());

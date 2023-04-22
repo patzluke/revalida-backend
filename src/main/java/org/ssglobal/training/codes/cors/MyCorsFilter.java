@@ -64,14 +64,17 @@ public class MyCorsFilter implements ContainerResponseFilter, ContainerRequestFi
 	private boolean validateToken(String token) {
 		try {
 			String[] chunks = token.split("\\.");
-			Decoder decoder = Base64.getUrlDecoder();
+			Decoder decoder = Base64.getUrlDecoder();			
 			String payload = new String(decoder.decode(chunks[1]));
-			
 			HashMap<String,Object> result = new ObjectMapper().readValue(payload, HashMap.class);
+			
 			Date tokenExpiresAt = new Date(Long.parseLong(result.get("exp").toString()) * 1000L);
+			int userId = Integer.parseInt(result.get("userId").toString());
 			
 			if (new Date().getTime() < tokenExpiresAt.getTime() && userTokenRepositoryImpl().isUserTokenExistsImpl(token)) {
 				return true;
+			} else if (new Date().getTime() < tokenExpiresAt.getTime()){
+				userTokenRepositoryImpl().deleteUserTokenImpl(userId);
 			}
 		} catch (JsonMappingException e) {
 			e.printStackTrace();

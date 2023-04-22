@@ -57,14 +57,13 @@ public class RepositoryImplConn {
 		}
 		Key key = keyGenerator.generateKey();
 		String jwtToken = Jwts.builder()
+							  .claim("userId", userId)
 							  .setIssuedAt(new Date())
 							  .setExpiration(Date.from(LocalDateTime.now().plusMinutes(10L).atZone(ZoneId.systemDefault()).toInstant()))
 							  .signWith(key, SignatureAlgorithm.HS256)
 							  .compact();
-		
 		if (userTokenRepositoryImpl().isUserTokenIdExistsImpl(userId)) {
-			userTokenRepositoryImpl().updateUserTokenImpl(jwtToken, userId);
-			return jwtToken;
+			userTokenRepositoryImpl().deleteUserTokenImpl(userId);
 		}
 		userTokenRepositoryImpl().createTokenImpl(userId, jwtToken);
 		return jwtToken;
