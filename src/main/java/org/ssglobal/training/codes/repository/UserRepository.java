@@ -88,6 +88,13 @@ public interface UserRepository {
 	})
 	public User searchUserByEmailAndPass(Map<String, String> parameter);
 	
+	@Select(value = "select employee_id, password from users where employee_id = #{employeeId}")
+	@Results(value = {
+			@Result(property = "employeeId", column = "employee_id"),
+			@Result(property = "password", column = "password"),
+	})
+	public User searchPasswordById(Integer employeeId);
+	
 	@Delete(value = "delete from users where employee_id = #{employeeId}")
 	public boolean deleteUserById(Integer employeeId);
 	
@@ -98,6 +105,9 @@ public interface UserRepository {
 							 position_id = #{positionId} where employee_id = #{employeeId}
 			""")
 	public boolean updateUser(Map<String, Object> parameters);
+	
+	@Update(value = "update users set password = #{password} where email = #{email}")
+	public boolean changePassword(Map<String, Object> parameters);
 	
 	@Insert(value = """
 			insert into users(email, mobile_number, password, user_type, first_name, middle_name, last_name, dept_id, birth_date, gender, position_id)

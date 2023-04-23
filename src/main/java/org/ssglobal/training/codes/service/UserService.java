@@ -11,6 +11,7 @@ import org.ssglobal.training.codes.cors.MyCorsFilter;
 import org.ssglobal.training.codes.cors.Secured;
 import org.ssglobal.training.codes.model.User;
 import org.ssglobal.training.codes.model.UserLogin;
+import org.ssglobal.training.codes.model.UserPasswordChange;
 
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
@@ -60,6 +61,21 @@ public class UserService {
 		}
 		return Response.noContent().build();
 	}
+	
+	@POST
+	@Secured
+	@Path("/get/password")
+	@Produces(value= {MediaType.APPLICATION_JSON})
+	@Consumes(value = {MediaType.APPLICATION_JSON})
+	public Response searchPasswordandId(Integer employeeId) {
+		try {
+			User result = userRepositoryImpl().searchPasswordByIdImpl(employeeId);
+			return Response.ok(result).build();
+		} catch(Exception e) {
+			e.getMessage();
+		}
+		return Response.noContent().build();
+	}
 
 	@POST
 	@Secured
@@ -69,13 +85,12 @@ public class UserService {
 	public Response authenticate(UserLogin payload) {
 		List<Object> userDetail = new ArrayList<>();
 		try {
-			User user = userRepositoryImpl().searchUserByEmailAndPassImpl(payload.getUsername(), payload.getPassword());
+			User user = userRepositoryImpl().searchUserByEmailAndPassImpl(payload.getUsername(), 
+																		  payload.getPassword());
 			if (user != null) {
-				String token = generateToken(user.getEmployeeId(), user.getEmail());
+				String token = generateToken(user.getEmployeeId(), user.getEmail(), 
+																   user.getUserType());
 				userDetail.add(token);
-				userDetail.add(user.getEmployeeId());
-				userDetail.add(user.getEmail());
-				userDetail.add(user.getUserType());
 				return Response.ok( new GenericEntity<>(userDetail) {}).build();
 			}
 		} catch(Exception e) {
@@ -111,6 +126,21 @@ public class UserService {
 	public Response updateUser(User user) {
 		try {
 			userRepositoryImpl().updateUserImpl(user);
+			return Response.ok(user).build();
+		}catch(Exception e) {
+			e.getMessage();
+		}
+		return Response.status(Status.BAD_REQUEST).build();
+	}
+	
+	@POST
+	@Secured
+	@Path("/update/password")
+	@Produces(value= {MediaType.APPLICATION_JSON, MediaType.TEXT_PLAIN})
+	@Consumes(value = {MediaType.APPLICATION_JSON, MediaType.TEXT_PLAIN, MediaType.APPLICATION_FORM_URLENCODED})
+	public Response changeUserPassword(UserPasswordChange user) {
+		try {
+			userRepositoryImpl().changePasswordImpl(user);
 			return Response.ok(user).build();
 		}catch(Exception e) {
 			e.getMessage();

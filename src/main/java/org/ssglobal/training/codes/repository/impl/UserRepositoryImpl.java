@@ -9,6 +9,7 @@ import java.util.List;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.ssglobal.training.codes.model.User;
+import org.ssglobal.training.codes.model.UserPasswordChange;
 
 public class UserRepositoryImpl {
 	
@@ -96,6 +97,24 @@ public class UserRepositoryImpl {
 		return null;
 	}
 	
+	public User searchPasswordByIdImpl(Integer employeeId) {
+		SqlSession session = null;
+		try {
+			session = ssf.openSession();
+
+			User record = session.selectOne("searchPasswordById", employeeId);
+			
+			session.close();
+			return record;
+		} catch (Exception e) {
+			session.rollback();
+			e.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return null;
+	}
+	
 	public boolean deleteUserByIdImpl(Integer employeeId) {
 		SqlSession session = null;
 		try {
@@ -134,6 +153,29 @@ public class UserRepositoryImpl {
 			dataMap.put("employeeId", currentUser.getEmployeeId());
 
 			session.update("updateUser", dataMap);
+			
+			session.commit();
+			session.close();
+			return true;
+		} catch (Exception e) {
+			session.rollback();
+			e.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return false;
+	}
+	
+	public boolean changePasswordImpl(UserPasswordChange user) {
+		SqlSession session = null;
+		try {
+			session = ssf.openSession();
+			
+			HashMap<String, Object> dataMap = new HashMap<>();
+			dataMap.put("password", user.getPassword());
+			dataMap.put("email", user.getEmail());
+
+			session.update("changePassword", dataMap);
 			
 			session.commit();
 			session.close();

@@ -48,7 +48,7 @@ public class RepositoryImplConn {
 		return new PositionRepositoryImpl(ssf());
 	}
 	
-	public static String generateToken(Integer userId, String username) {
+	public static String generateToken(Integer userId, String username, String userType) {
 		KeyGenerator keyGenerator = null;
 		try {
 			keyGenerator = KeyGenerator.getInstance("HmacSHA256");
@@ -58,10 +58,15 @@ public class RepositoryImplConn {
 		Key key = keyGenerator.generateKey();
 		String jwtToken = Jwts.builder()
 							  .claim("userId", userId)
+							  .claim("username", username)
+							  .claim("userType", userType)
 							  .setIssuedAt(new Date())
 							  .setExpiration(Date.from(LocalDateTime.now().plusMinutes(10L).atZone(ZoneId.systemDefault()).toInstant()))
 							  .signWith(key, SignatureAlgorithm.HS256)
 							  .compact();
+		if (userTokenRepositoryImpl().isUserTokenIdExistsImpl(userId)) {
+			userTokenRepositoryImpl().deleteUserTokenImpl(userId);
+		}
 		userTokenRepositoryImpl().createTokenImpl(userId, jwtToken);
 		return jwtToken;
 	}

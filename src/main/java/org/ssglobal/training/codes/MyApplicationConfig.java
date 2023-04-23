@@ -5,6 +5,7 @@ import java.util.Set;
 import org.ssglobal.training.codes.service.DepartmentService;
 import org.ssglobal.training.codes.service.PositionService;
 import org.ssglobal.training.codes.service.UserService;
+import org.ssglobal.training.codes.service.UserTokenService;
 
 import jakarta.ws.rs.core.Application;
 
@@ -15,6 +16,7 @@ public class MyApplicationConfig extends Application {
         set.add(UserService.class);
         set.add(DepartmentService.class);
         set.add(PositionService.class);
+        set.add(UserTokenService.class);
         return set;
     }
 }

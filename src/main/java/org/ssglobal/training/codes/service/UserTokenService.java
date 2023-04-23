@@ -16,7 +16,6 @@ import jakarta.ws.rs.core.Response;
 public class UserTokenService {
 	
 	@DELETE
-	@Secured
 	@Path("/delete/{id}")
 	@Produces(value = {MediaType.APPLICATION_JSON})
 	@Consumes(value = {MediaType.APPLICATION_JSON})
