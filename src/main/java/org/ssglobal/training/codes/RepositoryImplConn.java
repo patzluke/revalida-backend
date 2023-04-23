@@ -62,9 +62,6 @@ public class RepositoryImplConn {
 							  .setExpiration(Date.from(LocalDateTime.now().plusMinutes(10L).atZone(ZoneId.systemDefault()).toInstant()))
 							  .signWith(key, SignatureAlgorithm.HS256)
 							  .compact();
-		if (userTokenRepositoryImpl().isUserTokenIdExistsImpl(userId)) {
-			userTokenRepositoryImpl().deleteUserTokenImpl(userId);
-		}
 		userTokenRepositoryImpl().createTokenImpl(userId, jwtToken);
 		return jwtToken;
 	}
