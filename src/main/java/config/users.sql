@@ -29,15 +29,15 @@ create table users (
     birth_date date,
     gender varchar(10),
     position_id int,
-    foreign key(dept_id) references departments(department_id) on delete set null,
-    foreign key(position_id) references positions(position_id) on delete set null
+    foreign key(dept_id) references departments(department_id) on delete set 0,
+    foreign key(position_id) references positions(position_id) on delete set 0
 );
 
 drop table if exists user_tokens;
 create table user_tokens (
 	user_id int,
 	token varchar(200),
-	foreign key(user_id) references users(employee_id) on delete set null
+	foreign key(user_id) references users(employee_id) on delete cascade
 );
 
 insert into departments(department_name) values ('IT');
