@@ -17,9 +17,11 @@ alter table departments alter column department_id set default nextval('departme
 drop table if exists positions;
 create table positions (
 	position_id int primary key,
-	position_name varchar(50) unique
+	dept_id int not null,
+	position_name varchar(50) unique,
+	foreign key(dept_id) references departments(department_id) on delete set null
 );
-insert into positions values(0, 'TBD');
+insert into positions values(0, 0, 'TBD');
 drop sequence if exists position_sequence;
 create sequence position_sequence as int increment by 1 start with 1;
 alter table positions alter column position_id set default nextval('position_sequence');
@@ -55,8 +57,8 @@ create table user_tokens (
 insert into departments(department_name) values ('IT');
 insert into departments(department_name) values ('HR');
 
-insert into positions(position_name) values ('DEVELOPER');
-insert into positions(position_name) values ('Programmer');
+insert into positions(dept_id, position_name) values (1, 'DEVELOPER');
+insert into positions(dept_id, position_name) values (1, 'Programmer');
 
 insert into users(email, mobile_number, password, user_type, first_name, middle_name, last_name, dept_id, birth_date, gender, position_id) 
 values('ally@gmail.com', '9178192726', '123456', 'admin', 'ally', 'artuz', 'astrero', 1, '2015-07-25', 'female', 1);
@@ -68,6 +70,7 @@ CREATE OR REPLACE FUNCTION set_dept_id_to_zero()
 RETURNS TRIGGER AS $$
 BEGIN
   UPDATE users SET dept_id = 0 WHERE dept_id = OLD.department_id;
+  UPDATE positions set dept_id = 0 where dept_id = OLD.department_id;
   RETURN OLD;
 END;
 $$

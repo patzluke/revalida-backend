@@ -61,6 +61,27 @@ public class PositionService {
 		}
 		return Response.status(Status.INTERNAL_SERVER_ERROR).build();
 	}
+	
+	@GET
+	@Secured
+	@Path("/dept/get/{id}")
+	@Produces(value = { MediaType.APPLICATION_JSON })
+	public Response getPosByDepartmentId(@PathParam("id") Integer id) {
+		List<Position> pos = new ArrayList<>();
+		GenericEntity<List<Position>> listpos = null;
+		try {
+			pos = positionRepoImpl().getPosByDepartmentIdImpl(id);
+			if (pos != null) {
+				listpos = new GenericEntity<>(pos) {
+				};
+				return Response.ok(listpos).build();
+			}
+			return Response.status(Status.NO_CONTENT).build();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return Response.status(Status.INTERNAL_SERVER_ERROR).build();
+	}
 
 	@DELETE
 	@Secured
@@ -104,7 +125,8 @@ public class PositionService {
 	@Consumes(value = { MediaType.APPLICATION_JSON })
 	public Response createPosition(Position pos) {
 		try {
-			boolean result = positionRepoImpl().insertPosImpl(pos.getPositionName());
+			boolean result = positionRepoImpl().insertPosImpl(pos.getDepartmentId(), 
+															  pos.getPositionName());
 			if (result) {
 				return Response.ok(pos).build();
 			}

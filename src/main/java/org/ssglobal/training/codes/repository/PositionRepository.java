@@ -13,30 +13,46 @@ import org.ssglobal.training.codes.model.Position;
 
 public interface PositionRepository {
 	
-	@Select(value = "select * from positions p where position_id > 0")
+	@Select(value = "select * from positions p where position_id > 0 and dept_id > 0")
 	@Results(value = {
 			@Result(property = "positionId", column = "position_id"),
 			@Result(property = "positionName", column = "position_name"),
 	})
 	public List<Position> selectAllpos();
 	
-	@Select(value = "select * from positions where position_id = #{positionId}")
+	@Select(value = """
+			select * from positions where position_id = #{positionId} 
+			and position_id > 0 and dept_id > 0
+			""")
 	@Results(value = {
 			@Result(property = "positionId", column = "position_id"),
+			@Result(property = "departmentId", column = "dept_id"),
 			@Result(property = "positionName", column = "position_name"),
 	})
 	public Position getPosbyId(Integer positionId);
+	
+	@Select(value = """
+			select * from positions where dept_id = #{departmentId} 
+			and position_id > 0 and dept_id > 0
+			""")
+	@Results(value = {
+			@Result(property = "positionId", column = "position_id"),
+			@Result(property = "departmentId", column = "dept_id"),
+			@Result(property = "positionName", column = "position_name"),
+	})
+	public List<Position> getPosByDepartmentId(Integer departmentId);
 	
 	@Delete(value = "delete from positions where position_id = #{positionId}")
 	public boolean deletePosById(Integer positionId);
 	
 	@Update(value = """
-			update positions set position_name = #{positionName} where position_id = #{positionId}
+			update positions set dept_id = #{departmentId} set position_name = #{positionName} 
+			where position_id = #{positionId}
 			""")
 	public boolean updatePosition(Map<String, Object> parameters);
 	
 	@Insert(value = """
-			insert into positions(position_name) values (#{positionName})
+			insert into positions(dept_id, position_name) values (#{departmentId}, #{positionName})
 			""")
 	public boolean insertPosition();
 }

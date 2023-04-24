@@ -55,6 +55,26 @@ public class PositionRepositoryImpl {
 		return null;
 	}
 	
+	public List<Position> getPosByDepartmentIdImpl(Integer departmentId){
+		List<Position> records = new ArrayList<>();
+		SqlSession session  = null;
+				
+		try {	
+			session  = ssf.openSession();
+			
+			records = session.selectList("getPosByDepartmentId", departmentId);
+			
+			session.close();
+			return Collections.unmodifiableList(records);
+		} catch(Exception e) {
+			session.rollback();
+			e.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return new ArrayList<>();
+	}
+	
 	public boolean deletePosByIdImpl(Integer positionId) {
 		SqlSession session = null;
 		try {
@@ -81,6 +101,7 @@ public class PositionRepositoryImpl {
 			
 			HashMap<String, Object> dataMap = new HashMap<>();
 			dataMap.put("positionName", currentPos.getPositionName());
+			dataMap.put("departmentId", currentPos.getDepartmentId());
 			dataMap.put("positionId", currentPos.getPositionId());
 
 			session.update("updatePosition", dataMap);
@@ -97,11 +118,11 @@ public class PositionRepositoryImpl {
 		return false;
 	}
 	
-	public boolean insertPosImpl(String posName) {
+	public boolean insertPosImpl(Integer departmentId, String posName) {
 		SqlSession session = null;
 		try {
 			session = ssf.openSession();
-			Position user = new Position(null, posName);
+			Position user = new Position(null, departmentId, posName);
 
 			session.insert("insertPosition", user);
 
