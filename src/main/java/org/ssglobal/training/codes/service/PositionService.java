@@ -32,7 +32,7 @@ public class PositionService {
 		List<Position> pos = new ArrayList<>();
 		GenericEntity<List<Position>> listpos = null;
 		try {
-			pos = positionRepoImpl().selectAllpositionImpl();
+			pos = positionRepoImpl().selectAllPosInnerJoinDepartmentImpl();
 			if (pos != null) {
 				listpos = new GenericEntity<>(pos) {
 				};

@@ -37,6 +37,26 @@ public class PositionRepositoryImpl {
 		return new ArrayList<>();
 	}
 	
+	public List<Position> selectAllPosInnerJoinDepartmentImpl(){
+		List<Position> records = new ArrayList<>();
+		SqlSession session  = null;
+				
+		try {	
+			session  = ssf.openSession();
+			
+			records = session.selectList("selectAllPosInnerJoinDepartment");
+			
+			session.close();
+			return Collections.unmodifiableList(records);
+		} catch(Exception e) {
+			session.rollback();
+			e.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return new ArrayList<>();
+	}
+	
 	public Position getPosByIdImpl(Integer posId) {
 		SqlSession session = null;
 		try {
@@ -100,8 +120,8 @@ public class PositionRepositoryImpl {
 			session = ssf.openSession();
 			
 			HashMap<String, Object> dataMap = new HashMap<>();
-			dataMap.put("positionName", currentPos.getPositionName());
 			dataMap.put("departmentId", currentPos.getDepartmentId());
+			dataMap.put("positionName", currentPos.getPositionName());
 			dataMap.put("positionId", currentPos.getPositionId());
 
 			session.update("updatePosition", dataMap);

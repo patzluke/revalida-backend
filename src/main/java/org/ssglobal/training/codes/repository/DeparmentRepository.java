@@ -20,7 +20,7 @@ public interface DeparmentRepository {
 	})
 	public List<Department> selectAllDep();
 	
-	@Select(value = "select * from departments where department_id = #{departmentId} and department_id > 0")
+	@Select(value = "select * from departments where department_id = #{departmentId}")
 	@Results(value = {
 			@Result(property = "departmentId", column = "department_id"),
 			@Result(property = "departmentName", column = "department_name"),

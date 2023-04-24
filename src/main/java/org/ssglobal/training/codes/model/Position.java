@@ -5,9 +5,13 @@ public class Position {
 	private Integer departmentId;
 	private String positionName;
 
+	// for inner join foreign_key values
+	// for table departments
+	private String departmentName;
+
 	public Position() {
-	}	
-	
+	}
+
 	public Position(Integer positionId, Integer departmentId, String positionName) {
 		super();
 		this.positionId = positionId;
@@ -38,4 +42,13 @@ public class Position {
 	public void setPositionName(String positionName) {
 		this.positionName = positionName;
 	}
+
+	public String getDepartmentName() {
+		return departmentName;
+	}
+
+	public void setDepartmentName(String departmentName) {
+		this.departmentName = departmentName;
+	}
+
 }

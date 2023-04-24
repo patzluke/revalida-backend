@@ -13,31 +13,48 @@ import org.ssglobal.training.codes.model.Position;
 
 public interface PositionRepository {
 	
-	@Select(value = "select * from positions p where position_id > 0 and dept_id > 0")
+	@Select(value = "select * from positions p where position_id > 0")
 	@Results(value = {
 			@Result(property = "positionId", column = "position_id"),
+			@Result(property = "departmentId", column = "dept_id"),
 			@Result(property = "positionName", column = "position_name"),
 	})
 	public List<Position> selectAllpos();
 	
 	@Select(value = """
-			select * from positions where position_id = #{positionId} 
-			and position_id > 0 and dept_id > 0
+			select p.position_id, d.department_name, p.position_name from positions p
+			inner join departments d on p.dept_id = d.department_id
+			where position_id > 0;
+			""")
+	@Results(value = {
+			@Result(property = "positionId", column = "position_id"),
+			@Result(property = "departmentName", column = "department_name", javaType = String.class),
+			@Result(property = "positionName", column = "position_name"),
+	})
+	public List<Position> selectAllPosInnerJoinDepartment();
+	
+	@Select(value = """
+			select p.position_id, p.position_name, p.dept_id, d.department_name from positions p
+			inner join departments d on p.dept_id = d.department_id
+			where position_id = #{positionId} and position_id > 0;
 			""")
 	@Results(value = {
 			@Result(property = "positionId", column = "position_id"),
 			@Result(property = "departmentId", column = "dept_id"),
+			@Result(property = "departmentName", column = "department_name", javaType = String.class),
 			@Result(property = "positionName", column = "position_name"),
 	})
 	public Position getPosbyId(Integer positionId);
 	
 	@Select(value = """
-			select * from positions where dept_id = #{departmentId} 
-			and position_id > 0 and dept_id > 0
+			select p.position_id, p.position_name, p.dept_id, d.department_name from positions p
+			inner join departments d on p.dept_id = d.department_id 
+			where dept_id = #{departmentId} and position_id > 0
 			""")
 	@Results(value = {
 			@Result(property = "positionId", column = "position_id"),
 			@Result(property = "departmentId", column = "dept_id"),
+			@Result(property = "departmentName", column = "department_name", javaType = String.class),
 			@Result(property = "positionName", column = "position_name"),
 	})
 	public List<Position> getPosByDepartmentId(Integer departmentId);
@@ -46,7 +63,7 @@ public interface PositionRepository {
 	public boolean deletePosById(Integer positionId);
 	
 	@Update(value = """
-			update positions set dept_id = #{departmentId} set position_name = #{positionName} 
+			update positions set dept_id = #{departmentId}, position_name = #{positionName} 
 			where position_id = #{positionId}
 			""")
 	public boolean updatePosition(Map<String, Object> parameters);
