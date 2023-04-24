@@ -24,9 +24,12 @@ drop sequence if exists position_sequence;
 create sequence position_sequence as int increment by 1 start with 1;
 alter table positions alter column position_id set default nextval('position_sequence');
 
-drop table if exists users;
+drop sequence if exists users_sequence;
+create sequence users_sequence as int increment by 1 start with 227001;
+
+drop table if exists users cascade;
 create table users (
-    employee_id serial primary key,
+    employee_id int default nextval('users_sequence') not null primary key,
     email varchar(70) unique,
     mobile_number varchar(20) unique,
     password varchar(70),
@@ -38,8 +41,8 @@ create table users (
     birth_date date,
     gender varchar(10),
     position_id int,
-    foreign key(dept_id) references departments(department_id) on delete cascade,
-    foreign key(position_id) references positions(position_id) on delete cascade
+    foreign key(dept_id) references departments(department_id) on delete set null,
+    foreign key(position_id) references positions(position_id) on delete set null
 );
 
 drop table if exists user_tokens;
