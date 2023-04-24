@@ -5,15 +5,25 @@ create database users;
 
 drop table if exists departments;
 create table departments (
-	department_id serial primary key,
+	department_id int primary key,
 	department_name varchar(50) unique
 );
+insert into departments values(0, 'N/A');
+drop sequence if exists departments_sequence;
+create sequence departments_sequence as int increment by 1 start with 1;
+alter table departments alter column departments_id set default nextval('departments_sequence');
+
 
 drop table if exists positions;
 create table positions (
-	position_id serial primary key,
+	position_id int primary key,
 	position_name varchar(50) unique
 );
+insert into positions values(0, 'N/A');
+drop sequence if exists position_sequence;
+create sequence position_sequence as int increment by 1 start with 1;
+alter table positions alter column position_id set default nextval('position_sequence');
+
 
 drop table if exists users;
 create table users (
@@ -29,8 +39,8 @@ create table users (
     birth_date date,
     gender varchar(10),
     position_id int,
-    foreign key(dept_id) references departments(department_id) on delete set 0,
-    foreign key(position_id) references positions(position_id) on delete set 0
+    foreign key(dept_id) references departments(department_id),
+    foreign key(position_id) references positions(position_id)
 );
 
 drop table if exists user_tokens;
