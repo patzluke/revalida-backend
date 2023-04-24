@@ -2,7 +2,6 @@ package org.ssglobal.training.codes.service;
 
 import static org.ssglobal.training.codes.RepositoryImplConn.departmentRepoImpl;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,84 +23,95 @@ import jakarta.ws.rs.core.Response.Status;
 
 @Path("/departments")
 public class DepartmentService {
-	
+
 	@GET
 	@Secured
 	@Path("/get")
-	@Produces(value = {MediaType.APPLICATION_JSON})
+	@Produces(value = { MediaType.APPLICATION_JSON })
 	public Response getAllDep() {
 		List<Department> dep = new ArrayList<>();
 		GenericEntity<List<Department>> listDep = null;
 		try {
 			dep = departmentRepoImpl().selectAllDeparmentImpl();
-			listDep = new GenericEntity<>(dep) {};
-			return Response.ok(listDep).build();
-		} catch(Exception e) {
+			if (dep != null) {
+				listDep = new GenericEntity<>(dep) {
+				};
+				return Response.ok(listDep).build();
+			}
+			return Response.status(Status.NO_CONTENT).build();
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return Response.noContent().build();
+		return Response.status(Status.INTERNAL_SERVER_ERROR).build();
 	}
-	
+
 	@GET
 	@Secured
 	@Path("/get/{id}")
-	@Produces(value = {MediaType.APPLICATION_JSON})
+	@Produces(value = { MediaType.APPLICATION_JSON })
 	public Response getPosById(@PathParam("id") Integer id) {
 		try {
 			Department dep = departmentRepoImpl().getDepByIdImpl(id);
-			return Response.ok(dep).build();
-		}catch(Exception e) {
+			if (dep != null) {
+				return Response.ok(dep).build();
+			}
+			return Response.status(Status.NOT_FOUND.getStatusCode(), "invalid employee ID").build();
+		} catch (Exception e) {
 			e.getMessage();
 		}
-		return Response.noContent().build();
+		return Response.status(Status.INTERNAL_SERVER_ERROR).build();
 	}
-	
+
 	@DELETE
 	@Secured
 	@Path("/delete/{id}")
-	@Produces(value = {MediaType.APPLICATION_JSON})
-	@Consumes(value = {MediaType.APPLICATION_JSON})
+	@Produces(value = { MediaType.APPLICATION_JSON })
+	@Consumes(value = { MediaType.APPLICATION_JSON })
 	public Response deleteDepartment(@PathParam("id") Integer id) {
 		try {
 			Boolean result = departmentRepoImpl().deleteDepByIdImpl(id);
-			if(result) {
+			if (result) {
 				return Response.ok().build();
-			} else {
-				return Response.status(404, "invalid department ID").build();
 			}
-		}catch(Exception e) {
+			return Response.status(404, "invalid department ID").build();
+		} catch (Exception e) {
 			e.getMessage();
 		}
-		return Response.serverError().build();
+		return Response.status(Status.INTERNAL_SERVER_ERROR).build();
 	}
-	
+
 	@PUT
 	@Secured
 	@Path("/update")
-	@Produces(value= {MediaType.APPLICATION_JSON})
-	@Consumes(value = {MediaType.APPLICATION_JSON})
+	@Produces(value = { MediaType.APPLICATION_JSON })
+	@Consumes(value = { MediaType.APPLICATION_JSON })
 	public Response updateDep(Department dep) {
 		try {
-			departmentRepoImpl().updateDepImpl(dep);
-			return Response.ok(dep).build();
-		}catch(Exception e) {
+			if (departmentRepoImpl().updateDepImpl(dep)) {
+				return Response.ok(dep).build();
+			}
+			return Response.status(Status.BAD_REQUEST).build();
+		} catch (Exception e) {
 			e.getMessage();
 		}
-		return Response.status(Status.BAD_REQUEST).build();
+		return Response.status(Status.INTERNAL_SERVER_ERROR).build();
 	}
-	
+
 	@POST
 	@Secured
 	@Path("/insert")
-	@Produces(value= {MediaType.APPLICATION_JSON})
-	@Consumes(value = {MediaType.APPLICATION_JSON})
+	@Produces(value = { MediaType.APPLICATION_JSON })
+	@Consumes(value = { MediaType.APPLICATION_JSON })
 	public Response createDep(Department dep) {
 		try {
-			departmentRepoImpl().insertDepImpl(dep.getDepartmentName());
-			return Response.ok(dep).build();
-		}catch(Exception e) {
+			boolean result = departmentRepoImpl().insertDepImpl(dep.getDepartmentName());
+			if (result) {
+				return Response.ok(dep).build();
+			}
+			return Response.status(Status.BAD_REQUEST).build();
+		} catch (Exception e) {
 			e.getMessage();
 		}
-		return Response.status(Status.BAD_REQUEST).build();
+		return Response.status(Status.INTERNAL_SERVER_ERROR).build();
 	}
 }

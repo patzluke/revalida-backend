@@ -29,140 +29,155 @@ import jakarta.ws.rs.core.Response.Status;
 @Path("/users")
 public class UserService {
 	private static Logger logger = Logger.getLogger(MyCorsFilter.class.getName());
-	
+
 	@GET
 	@Secured
 	@Path("/get")
-	@Produces(value = {MediaType.APPLICATION_JSON})
+	@Produces(value = { MediaType.APPLICATION_JSON })
 	public Response getAllUsersInnerJoinOnPositionAndDepartment() {
 		List<User> users = new ArrayList<>();
 		GenericEntity<List<User>> listUsers = null;
 		try {
 			users = userRepositoryImpl().selectUsersInnerJoinDepartmentAndPositionImpl();
-			listUsers = new GenericEntity<>(users) {};
-			return Response.ok(listUsers).build();
-		} catch(Exception e) {
-			logger.severe("IT WENT HERE IN THE EXCEPTION");
+			if (users != null) {
+				listUsers = new GenericEntity<>(users) {
+				};
+				return Response.ok(listUsers).build();
+			}
+			return Response.status(Status.NO_CONTENT).build();
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return Response.noContent().build();
+		return Response.status(Status.INTERNAL_SERVER_ERROR).build();
 	}
-	
+
 	@GET
 	@Secured
 	@Path("/get/{id}")
-	@Produces(value = {MediaType.APPLICATION_JSON})
+	@Produces(value = { MediaType.APPLICATION_JSON })
 	public Response getUserById(@PathParam("id") Integer id) {
 		try {
 			User user = userRepositoryImpl().getUserByIdImpl(id);
-			return Response.ok(user).build();
-		}catch(Exception e) {
+			if (user != null) {
+				return Response.ok(user).build();
+			}
+			return Response.status(Status.NOT_FOUND.getStatusCode(), "invalid employee ID").build();
+		} catch (Exception e) {
 			e.getMessage();
 		}
-		return Response.noContent().build();
+		return Response.status(Status.INTERNAL_SERVER_ERROR).build();
 	}
-	
+
 	@POST
 	@Secured
 	@Path("/get/password")
-	@Produces(value= {MediaType.APPLICATION_JSON})
-	@Consumes(value = {MediaType.APPLICATION_JSON})
+	@Produces(value = { MediaType.APPLICATION_JSON })
+	@Consumes(value = { MediaType.APPLICATION_JSON })
 	public Response searchPasswordandId(Integer employeeId) {
 		try {
-			User result = userRepositoryImpl().searchPasswordByIdImpl(employeeId);
-			return Response.ok(result).build();
-		} catch(Exception e) {
+			User user = userRepositoryImpl().searchPasswordByIdImpl(employeeId);
+			if (user != null) {
+				return Response.ok(user).build();
+			}
+			return Response.status(Status.NOT_FOUND).build();
+		} catch (Exception e) {
 			e.getMessage();
 		}
-		return Response.noContent().build();
+		return Response.status(Status.INTERNAL_SERVER_ERROR).build();
 	}
 
 	@POST
 	@Secured
 	@Path("/authenticate")
-	@Consumes(value = {MediaType.APPLICATION_JSON, MediaType.TEXT_PLAIN, MediaType.APPLICATION_FORM_URLENCODED})
-	@Produces(value = {MediaType.APPLICATION_JSON, MediaType.TEXT_PLAIN})
+	@Consumes(value = { MediaType.APPLICATION_JSON, MediaType.TEXT_PLAIN, MediaType.APPLICATION_FORM_URLENCODED })
+	@Produces(value = { MediaType.APPLICATION_JSON, MediaType.TEXT_PLAIN })
 	public Response authenticate(UserLogin payload) {
 		List<Object> userDetail = new ArrayList<>();
 		try {
-			User user = userRepositoryImpl().searchUserByEmailAndPassImpl(payload.getUsername(), 
-																		  payload.getPassword());
+			User user = userRepositoryImpl().searchUserByEmailAndPassImpl(payload.getUsername(), payload.getPassword());
 			if (user != null) {
-				String token = generateToken(user.getEmployeeId(), user.getEmail(), 
-																   user.getUserType());
+				String token = generateToken(user.getEmployeeId(), user.getEmail(), user.getUserType());
 				userDetail.add(token);
-				return Response.ok( new GenericEntity<>(userDetail) {}).build();
+				return Response.ok(new GenericEntity<>(userDetail) {
+				}).build();
 			}
-		} catch(Exception e) {
+			return Response.status(Response.Status.UNAUTHORIZED).build();
+		} catch (Exception e) {
 			e.getMessage();
 		}
-		return Response.status(Response.Status.UNAUTHORIZED).build();
+		return Response.status(Status.INTERNAL_SERVER_ERROR).build();
 	}
-	
+
 	@DELETE
 	@Secured
 	@Path("/delete/{id}")
-	@Produces(value = {MediaType.APPLICATION_JSON})
-	@Consumes(value = {MediaType.APPLICATION_JSON})
+	@Produces(value = { MediaType.APPLICATION_JSON })
+	@Consumes(value = { MediaType.APPLICATION_JSON })
 	public Response deleteUser(@PathParam("id") Integer id) {
 		try {
 			Boolean result = userRepositoryImpl().deleteUserByIdImpl(id);
-			if(result) {
+			if (result) {
 				return Response.ok().build();
-			} else {
-				return Response.status(404, "invalid employee ID").build();
 			}
-		}catch(Exception e) {
+			return Response.status(Status.NOT_FOUND.getStatusCode(), "invalid employee ID").build();
+		} catch (Exception e) {
 			e.getMessage();
 		}
-		return Response.serverError().build();
+		return Response.status(Status.INTERNAL_SERVER_ERROR).build();
 	}
-	
+
 	@PUT
 	@Secured
 	@Path("/update")
-	@Produces(value= {MediaType.APPLICATION_JSON})
-	@Consumes(value = {MediaType.APPLICATION_JSON})
+	@Produces(value = { MediaType.APPLICATION_JSON })
+	@Consumes(value = { MediaType.APPLICATION_JSON })
 	public Response updateUser(User user) {
 		try {
-			userRepositoryImpl().updateUserImpl(user);
-			return Response.ok(user).build();
-		}catch(Exception e) {
+			if (userRepositoryImpl().updateUserImpl(user)) {
+				return Response.ok(user).build();
+			}
+			return Response.status(Status.BAD_REQUEST).build();
+		} catch (Exception e) {
 			e.getMessage();
 		}
-		return Response.status(Status.BAD_REQUEST).build();
+		return Response.status(Status.INTERNAL_SERVER_ERROR).build();
 	}
-	
+
 	@POST
 	@Secured
 	@Path("/update/password")
-	@Produces(value= {MediaType.APPLICATION_JSON, MediaType.TEXT_PLAIN})
-	@Consumes(value = {MediaType.APPLICATION_JSON, MediaType.TEXT_PLAIN, MediaType.APPLICATION_FORM_URLENCODED})
+	@Produces(value = { MediaType.APPLICATION_JSON, MediaType.TEXT_PLAIN })
+	@Consumes(value = { MediaType.APPLICATION_JSON, MediaType.TEXT_PLAIN, MediaType.APPLICATION_FORM_URLENCODED })
 	public Response changeUserPassword(UserPasswordChange user) {
 		try {
-			userRepositoryImpl().changePasswordImpl(user);
-			return Response.ok(user).build();
-		}catch(Exception e) {
+			if (userRepositoryImpl().changePasswordImpl(user)) {
+				return Response.ok(user).build();
+			}
+			return Response.status(Status.BAD_REQUEST).build();
+		} catch (Exception e) {
 			e.getMessage();
 		}
-		return Response.status(Status.BAD_REQUEST).build();
+		return Response.status(Status.INTERNAL_SERVER_ERROR).build();
 	}
-	
+
 	@POST
 	@Secured
 	@Path("/insert")
-	@Produces(value= {MediaType.APPLICATION_JSON})
-	@Consumes(value = {MediaType.APPLICATION_JSON})
+	@Produces(value = { MediaType.APPLICATION_JSON })
+	@Consumes(value = { MediaType.APPLICATION_JSON })
 	public Response createUser(User user) {
 		try {
-			userRepositoryImpl().insertUser(user.getEmail(), user.getMobileNumber(),
-									  user.getPassword(), user.getUserType(), user.getFirstName(),
-									  user.getMiddleName(), user.getLastName(), user.getDepartmentId(),
-									  user.getBirthDate(), user.getGender(), user.getPositionId());
-			return Response.ok(user).build();
-		}catch(Exception e) {
+			boolean result = userRepositoryImpl().insertUser(user.getEmail(), user.getMobileNumber(),
+					user.getPassword(), user.getUserType(), user.getFirstName(), user.getMiddleName(),
+					user.getLastName(), user.getDepartmentId(), user.getBirthDate(), user.getGender(),
+					user.getPositionId());
+			if (result) {
+				return Response.ok(user).build();
+			}
+			return Response.status(Status.BAD_REQUEST).build();
+		} catch (Exception e) {
 			e.getMessage();
 		}
-		return Response.status(Status.BAD_REQUEST).build();
+		return Response.status(Status.INTERNAL_SERVER_ERROR).build();
 	}
 }
