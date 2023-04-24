@@ -13,7 +13,7 @@ import org.ssglobal.training.codes.model.Position;
 
 public interface PositionRepository {
 	
-	@Select(value = "select * from positions p")
+	@Select(value = "select * from positions p where position_id > 0")
 	@Results(value = {
 			@Result(property = "positionId", column = "position_id"),
 			@Result(property = "positionName", column = "position_name"),

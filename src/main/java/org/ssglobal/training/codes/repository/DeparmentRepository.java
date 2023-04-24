@@ -13,7 +13,7 @@ import org.ssglobal.training.codes.model.Department;
 
 public interface DeparmentRepository {
 	
-	@Select(value = "select * from departments d")
+	@Select(value = "select * from departments d where department_id > 0")
 	@Results(value = {
 			@Result(property = "departmentId", column = "department_id"),
 			@Result(property = "departmentName", column = "department_name"),
