@@ -10,6 +10,7 @@ import javax.crypto.KeyGenerator;
 
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.ssglobal.training.codes.repository.impl.DepartmentRepositoryImpl;
+import org.ssglobal.training.codes.repository.impl.PasswordRequestRepositoryImpl;
 import org.ssglobal.training.codes.repository.impl.PositionRepositoryImpl;
 import org.ssglobal.training.codes.repository.impl.UserRepositoryImpl;
 import org.ssglobal.training.codes.repository.impl.UserTokenRepositoryImpl;
@@ -46,6 +47,10 @@ public class RepositoryImplConn {
 	
 	public static PositionRepositoryImpl positionRepoImpl() {
 		return new PositionRepositoryImpl(ssf());
+	}
+	
+	public static PasswordRequestRepositoryImpl passwordRequestRepositoryImpl() {
+		return new PasswordRequestRepositoryImpl(ssf()); 
 	}
 	
 	public static String generateToken(Integer userId, String username, String userType) {

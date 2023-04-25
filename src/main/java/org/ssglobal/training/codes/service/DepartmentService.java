@@ -28,7 +28,7 @@ public class DepartmentService {
 	@Secured
 	@Path("/get")
 	@Produces(value = { MediaType.APPLICATION_JSON })
-	public Response getAllDep() {
+	public Response getAllPasswordRequestsJoinByUsers() {
 		List<Department> dep = new ArrayList<>();
 		GenericEntity<List<Department>> listDep = null;
 		try {
@@ -88,7 +88,7 @@ public class DepartmentService {
 	public Response updateDep(Department dep) {
 		try {
 			if (departmentRepoImpl().updateDepImpl(dep)) {
-				return Response.ok(dep).build();
+				return Response.ok().build();
 			}
 			return Response.status(Status.BAD_REQUEST).build();
 		} catch (Exception e) {
@@ -106,7 +106,7 @@ public class DepartmentService {
 		try {
 			boolean result = departmentRepoImpl().insertDepImpl(dep.getDepartmentName());
 			if (result) {
-				return Response.ok(dep).build();
+				return Response.ok().build();
 			}
 			return Response.status(Status.BAD_REQUEST).build();
 		} catch (Exception e) {

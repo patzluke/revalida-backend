@@ -109,7 +109,7 @@ public class PositionService {
 	public Response updatePosition(Position pos) {
 		try {
 			if (positionRepoImpl().updatePosImpl(pos)) {
-				return Response.ok(pos).build();
+				return Response.ok().build();
 			}
 			return Response.status(Status.BAD_REQUEST).build();
 		} catch (Exception e) {
@@ -128,7 +128,7 @@ public class PositionService {
 			boolean result = positionRepoImpl().insertPosImpl(pos.getDepartmentId(), 
 															  pos.getPositionName());
 			if (result) {
-				return Response.ok(pos).build();
+				return Response.ok().build();
 			}
 			return Response.status(Status.BAD_REQUEST).build();
 		} catch (Exception e) {

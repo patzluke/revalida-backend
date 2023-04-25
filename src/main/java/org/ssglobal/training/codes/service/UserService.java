@@ -134,7 +134,7 @@ public class UserService {
 	public Response updateUser(User user) {
 		try {
 			if (userRepositoryImpl().updateUserImpl(user)) {
-				return Response.ok(user).build();
+				return Response.ok().build();
 			}
 			return Response.status(Status.BAD_REQUEST).build();
 		} catch (Exception e) {
@@ -151,7 +151,7 @@ public class UserService {
 	public Response changeUserPassword(UserPasswordChange user) {
 		try {
 			if (userRepositoryImpl().changePasswordImpl(user)) {
-				return Response.ok(user).build();
+				return Response.ok().build();
 			}
 			return Response.status(Status.BAD_REQUEST).build();
 		} catch (Exception e) {
@@ -172,7 +172,7 @@ public class UserService {
 					user.getLastName(), user.getDepartmentId(), user.getBirthDate(), user.getGender(),
 					user.getPositionId());
 			if (result) {
-				return Response.ok(user).build();
+				return Response.ok().build();
 			}
 			return Response.status(Status.BAD_REQUEST).build();
 		} catch (Exception e) {

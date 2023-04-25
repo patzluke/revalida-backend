@@ -3,6 +3,7 @@ package org.ssglobal.training.codes;
 import java.util.HashSet;
 import java.util.Set;
 import org.ssglobal.training.codes.service.DepartmentService;
+import org.ssglobal.training.codes.service.PasswordRequestService;
 import org.ssglobal.training.codes.service.PositionService;
 import org.ssglobal.training.codes.service.UserService;
 import org.ssglobal.training.codes.service.UserTokenService;
@@ -17,6 +18,7 @@ public class MyApplicationConfig extends Application {
         set.add(DepartmentService.class);
         set.add(PositionService.class);
         set.add(UserTokenService.class);
+        set.add(PasswordRequestService.class);
         return set;
     }
 }

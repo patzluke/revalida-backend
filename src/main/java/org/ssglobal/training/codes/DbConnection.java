@@ -9,10 +9,12 @@ import org.apache.ibatis.transaction.jdbc.JdbcTransactionFactory;
 import org.apache.ibatis.type.TypeAliasRegistry;
 
 import org.ssglobal.training.codes.model.Department;
+import org.ssglobal.training.codes.model.PasswordRequest;
 import org.ssglobal.training.codes.model.Position;
 import org.ssglobal.training.codes.model.User;
 import org.ssglobal.training.codes.model.UserToken;
 import org.ssglobal.training.codes.repository.DeparmentRepository;
+import org.ssglobal.training.codes.repository.PasswordRequestRepository;
 import org.ssglobal.training.codes.repository.PositionRepository;
 import org.ssglobal.training.codes.repository.UserRepository;
 import org.ssglobal.training.codes.repository.UserTokenRepository;
@@ -61,13 +63,15 @@ public class DbConnection {
 			tar.registerAlias("userToken", UserToken.class);
 			tar.registerAlias("department", Department.class);
 			tar.registerAlias("position", Position.class);
+			tar.registerAlias("passwordRequest", PasswordRequest.class);
 
 			//c dao or Repository registration
 			config.addMapper(UserRepository.class);
 			config.addMapper(UserTokenRepository.class);
 			config.addMapper(DeparmentRepository.class);
 			config.addMapper(PositionRepository.class);
-			
+			config.addMapper(PasswordRequestRepository.class);
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
