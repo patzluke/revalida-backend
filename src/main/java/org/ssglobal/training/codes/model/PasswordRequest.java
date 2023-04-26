@@ -1,13 +1,8 @@
 package org.ssglobal.training.codes.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 public class PasswordRequest {
-	@JsonProperty
 	private Integer id;
-	@JsonProperty
 	private Integer empId;
-	@JsonProperty
 	private String status;
 
 	// for inner join foreign_key values

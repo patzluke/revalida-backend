@@ -14,7 +14,7 @@ import org.ssglobal.training.codes.model.PasswordRequest;
 public interface PasswordRequestRepository {
 
 	@Select("""
-			select p.id, p.status, p.emp_id, concat(u.first_name, ' ', u.last_name) as employee_name
+			select p.id, p.status, p.emp_id, concat(u.first_name, ' ', u.last_name) as employee_name, u.email
 			from password_requests p inner join users u on p.emp_id = u.employee_id
 			where p.status = 'Pending'
 			""")
