@@ -1,11 +1,14 @@
 package org.ssglobal.training.codes.repository;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Result;
 import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
+import org.ssglobal.training.codes.model.Department;
 import org.ssglobal.training.codes.model.PasswordRequest;
 
 public interface PasswordRequestRepository {
@@ -26,4 +29,19 @@ public interface PasswordRequestRepository {
 			insert into password_requests(emp_id) values(#{empId})
 			""")
 	public boolean insertPasswordRequest();
+	
+	@Update(value = """
+			update password_requests
+			set status = #{status}
+			where id = #{empId}
+			""")
+	public boolean updateStatus(Map<String, Object> parameters);
+	
+	@Select(value = "select * from password_requests where id = #{id}")
+	@Results(value = {
+			@Result(property = "id", column = "id"),
+			@Result(property = "empId", column = "emp_id"),
+			@Result(property = "status", column = "status"),
+	})
+	public PasswordRequest getPasswordRequestbyId(Integer id);
 }

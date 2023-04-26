@@ -1,5 +1,6 @@
 package org.ssglobal.training.codes.service;
 
+import static org.ssglobal.training.codes.RepositoryImplConn.departmentRepoImpl;
 import static org.ssglobal.training.codes.RepositoryImplConn.passwordRequestRepositoryImpl;
 
 import java.util.ArrayList;
@@ -8,13 +9,16 @@ import java.util.logging.Logger;
 
 import org.ssglobal.training.codes.cors.MyCorsFilter;
 import org.ssglobal.training.codes.cors.Secured;
+import org.ssglobal.training.codes.model.Department;
 import org.ssglobal.training.codes.model.PasswordRequest;
-import org.ssglobal.training.codes.model.User;
+import org.ssglobal.training.codes.repository.impl.PasswordRequestRepositoryImpl;
 
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
+import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.GenericEntity;
 import jakarta.ws.rs.core.MediaType;
@@ -58,6 +62,40 @@ public class PasswordRequestService {
 				return Response.ok().build();
 			}
 			return Response.status(Status.BAD_REQUEST).build();
+		} catch (Exception e) {
+			e.getMessage();
+		}
+		return Response.status(Status.INTERNAL_SERVER_ERROR).build();
+	}
+	
+	@PUT
+	@Secured
+	@Path("/update")
+	@Produces(value = { MediaType.APPLICATION_JSON })
+	@Consumes(value = { MediaType.APPLICATION_JSON })
+	public Response updateStatus(PasswordRequest pr) {
+		try {
+			if (passwordRequestRepositoryImpl().updateStatusImpl(pr)) {
+				return Response.ok().build();
+			}
+			return Response.status(Status.BAD_REQUEST).build();
+		} catch (Exception e) {
+			e.getMessage();
+		}
+		return Response.status(Status.INTERNAL_SERVER_ERROR).build();
+	}
+
+	@GET
+	@Secured
+	@Path("/get/{id}")
+	@Produces(value = { MediaType.APPLICATION_JSON })
+	public Response getPosById(@PathParam("id") Integer id) {
+		try {
+			PasswordRequest pr = passwordRequestRepositoryImpl().getRequestByIdImpl(id);
+			if (pr != null) {
+				return Response.ok(pr).build();
+			}
+			return Response.status(Status.NOT_FOUND.getStatusCode(), "invalid request ID").build();
 		} catch (Exception e) {
 			e.getMessage();
 		}
