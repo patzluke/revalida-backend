@@ -1,6 +1,5 @@
 package org.ssglobal.training.codes.service;
 
-import static org.ssglobal.training.codes.RepositoryImplConn.departmentRepoImpl;
 import static org.ssglobal.training.codes.RepositoryImplConn.passwordRequestRepositoryImpl;
 
 import java.util.ArrayList;
@@ -9,9 +8,7 @@ import java.util.logging.Logger;
 
 import org.ssglobal.training.codes.cors.MyCorsFilter;
 import org.ssglobal.training.codes.cors.Secured;
-import org.ssglobal.training.codes.model.Department;
 import org.ssglobal.training.codes.model.PasswordRequest;
-import org.ssglobal.training.codes.repository.impl.PasswordRequestRepositoryImpl;
 
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;

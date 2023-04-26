@@ -3,6 +3,8 @@ create database users;
 
 \c users
 
+create extension pgcrypto;
+
 drop table if exists departments;
 create table departments (
 	department_id int primary key,
@@ -34,7 +36,7 @@ create table users (
     employee_id int default nextval('users_sequence') not null primary key,
     email varchar(70) unique,
     mobile_number varchar(20) unique,
-    password varchar(70),
+    password varchar(200),
     user_type varchar(70),
     first_name varchar(70),
     middle_name varchar(70),
@@ -51,7 +53,7 @@ drop table if exists password_requests;
 create table password_requests (
 	id serial primary key,
 	emp_id int,
-	status varchar(20) default 'pending',
+	status varchar(20) default 'Pending',
 	foreign key(emp_id) references users(employee_id) on delete cascade
 );
 
@@ -69,10 +71,10 @@ insert into positions(dept_id, position_name) values (1, 'DEVELOPER');
 insert into positions(dept_id, position_name) values (1, 'Programmer');
 
 insert into users(email, mobile_number, password, user_type, first_name, middle_name, last_name, dept_id, birth_date, gender, position_id) 
-values('ally@gmail.com', '9178192726', '123456', 'admin', 'ally', 'artuz', 'astrero', 1, '2015-07-25', 'female', 1);
+values('ally@gmail.com', '9178192726', pgp_sym_encrypt('123456', 'r3vaLid@'), 'admin', 'ally', 'artuz', 'astrero', 1, '2015-07-25', 'female', 1);
 
 insert into users(email, mobile_number, password, user_type, first_name, middle_name, last_name, dept_id, birth_date, gender, position_id) 
-values('patz@gmail.com', '9178192725', '123456', 'employee', 'patz', 'artuz', 'astrero', 1, '2015-07-25', 'female', 1);
+values('patz@gmail.com', '9178192725', pgp_sym_encrypt('123456', 'r3vaLid@'), 'employee', 'patz', 'artuz', 'astrero', 1, '2015-07-25', 'female', 1);
 
 CREATE OR REPLACE FUNCTION set_dept_id_to_zero()
 RETURNS TRIGGER AS $$

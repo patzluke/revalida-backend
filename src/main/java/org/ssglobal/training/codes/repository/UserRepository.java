@@ -79,7 +79,7 @@ public interface UserRepository {
 	
 	@Select(value = """
 			select employee_id, email, user_type from users 
-			where email = #{email} and password = #{password}
+			where email = #{email} and pgp_sym_decrypt(password::bytea, 'r3vaLid@') = #{password};
 			""")
 	@Results(value = {
 			@Result(property = "employeeId", column = "employee_id"),
@@ -88,7 +88,10 @@ public interface UserRepository {
 	})
 	public User searchUserByEmailAndPass(Map<String, String> parameter);
 	
-	@Select(value = "select employee_id, password from users where employee_id = #{employeeId}")
+	@Select(value = """
+			select employee_id, pgp_sym_decrypt(password::bytea, 'r3vaLid@') as password 
+			from users where employee_id = #{employeeId};
+			""")
 	@Results(value = {
 			@Result(property = "employeeId", column = "employee_id"),
 			@Result(property = "password", column = "password"),
@@ -106,12 +109,12 @@ public interface UserRepository {
 			""")
 	public boolean updateUser(Map<String, Object> parameters);
 	
-	@Update(value = "update users set password = #{password} where email = #{email}")
+	@Update(value = "update users set password = pgp_sym_encrypt(#{password}, 'r3vaLid@') where email = #{email}")
 	public boolean changePassword(Map<String, Object> parameters);
 	
 	@Insert(value = """
 			insert into users(email, mobile_number, password, user_type, first_name, middle_name, last_name, dept_id, birth_date, gender, position_id)
-			values(#{email}, #{mobileNumber}, #{password}, #{userType}, #{firstName}, #{middleName}, #{lastName}, #{departmentId}, #{birthDate}, #{gender}, #{positionId})
+			values(#{email}, #{mobileNumber}, pgp_sym_encrypt(#{password}, 'r3vaLid@'), #{userType}, #{firstName}, #{middleName}, #{lastName}, #{departmentId}, #{birthDate}, #{gender}, #{positionId})
 			""")
 	public boolean inserUser();
 }

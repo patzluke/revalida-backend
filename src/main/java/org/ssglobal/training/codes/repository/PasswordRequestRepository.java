@@ -14,8 +14,9 @@ import org.ssglobal.training.codes.model.PasswordRequest;
 public interface PasswordRequestRepository {
 
 	@Select("""
-			select p.id, p.status, p.emp_id, concat(u.first_name, ' ', u.last_name) as employee_name, u.email
-			from password_requests p inner join users u on p.emp_id = u.employee_id;
+			select p.id, p.status, p.emp_id, concat(u.first_name, ' ', u.last_name) as employee_name
+			from password_requests p inner join users u on p.emp_id = u.employee_id
+			where p.status = 'Pending'
 			""")
 	@Results(value = { 
 			@Result(property = "id", column = "id"), 
@@ -33,15 +34,20 @@ public interface PasswordRequestRepository {
 	@Update(value = """
 			update password_requests
 			set status = #{status}
-			where id = #{empId}
+			where id = #{id}
 			""")
 	public boolean updateStatus(Map<String, Object> parameters);
 	
-	@Select(value = "select * from password_requests where id = #{id}")
+	@Select(value = """
+			select p.id, p.status, p.emp_id, u.email
+			from password_requests p inner join users u on p.emp_id = u.employee_id
+			where id = #{id}
+			""")
 	@Results(value = {
 			@Result(property = "id", column = "id"),
 			@Result(property = "empId", column = "emp_id"),
 			@Result(property = "status", column = "status"),
+			@Result(property = "email", column = "email"),
 	})
 	public PasswordRequest getPasswordRequestbyId(Integer id);
 }

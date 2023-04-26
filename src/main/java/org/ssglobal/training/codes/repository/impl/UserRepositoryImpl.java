@@ -96,14 +96,13 @@ public class UserRepositoryImpl {
 		}
 		return null;
 	}
-	
+
 	public User searchPasswordByIdImpl(Integer employeeId) {
 		SqlSession session = null;
 		try {
 			session = ssf.openSession();
 
 			User record = session.selectOne("searchPasswordById", employeeId);
-			
 			session.close();
 			return record;
 		} catch (Exception e) {
@@ -197,7 +196,7 @@ public class UserRepositoryImpl {
 		try {
 			session = ssf.openSession();
 			User user = new User(null, email, mobileNumber, password, userType, firstName, middleName, lastName, departmentId, birthDate, gender, positionId);
-
+			
 			session.insert("inserUser", user);
 
 			session.commit();
