@@ -35,11 +35,11 @@ public class PasswordRequestRepositoryImpl {
 		return new ArrayList<>();
 	}
 	
-	public boolean insertPasswordRequestImpl(Integer employeeId) {
+	public boolean insertPasswordRequestImpl(Integer empId) {
 		SqlSession session = null;
 		try {
 			session = ssf.openSession();
-			PasswordRequest passwordRequest = new PasswordRequest(null, employeeId, null);
+			PasswordRequest passwordRequest = new PasswordRequest(null, empId, null);
 
 			session.insert("insertPasswordRequest", passwordRequest);
 

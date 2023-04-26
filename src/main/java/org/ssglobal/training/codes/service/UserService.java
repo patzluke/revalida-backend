@@ -73,9 +73,9 @@ public class UserService {
 	@Path("/get/password")
 	@Produces(value = { MediaType.APPLICATION_JSON })
 	@Consumes(value = { MediaType.APPLICATION_JSON })
-	public Response searchPasswordandId(Integer employeeId) {
+	public Response searchPasswordandId(Integer empId) {
 		try {
-			User user = userRepositoryImpl().searchPasswordByIdImpl(employeeId);
+			User user = userRepositoryImpl().searchPasswordByIdImpl(empId);
 			if (user != null) {
 				return Response.ok(user).build();
 			}
