@@ -45,8 +45,8 @@ public class PasswordRequestService {
 	@POST
 	@Secured
 	@Path("/insert")
-	@Produces(value = { MediaType.APPLICATION_JSON })
-	@Consumes(value = { MediaType.APPLICATION_JSON })
+	@Consumes(value = { MediaType.APPLICATION_JSON, MediaType.TEXT_PLAIN, MediaType.APPLICATION_FORM_URLENCODED })
+	@Produces(value = { MediaType.APPLICATION_JSON, MediaType.TEXT_PLAIN })
 	public Response createDep(Integer employeeId) {
 		try {
 			boolean result = passwordRequestRepositoryImpl().insertPasswordRequestImpl(employeeId);

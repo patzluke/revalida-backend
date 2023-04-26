@@ -35,7 +35,11 @@ public class MyCorsFilter implements ContainerResponseFilter, ContainerRequestFi
 		try {
 			UriInfo uriInfo = requestContext.getUriInfo();
 			String authorizationHeader = requestContext.getHeaderString(HttpHeaders.AUTHORIZATION);
-			if (!uriInfo.getPath().endsWith("users/authenticate")) {
+			logger.severe(uriInfo.getPath() + "heyheyhey");
+			logger.severe(uriInfo.getPath().endsWith("passwordrequest/insert") + "heyyyy");
+			if (uriInfo.getPath().endsWith("users/authenticate") || uriInfo.getPath().endsWith("passwordrequest/insert")) {
+				
+			} else {
 				if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
 					requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).build());
 				}

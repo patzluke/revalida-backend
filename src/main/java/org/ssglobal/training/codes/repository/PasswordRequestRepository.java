@@ -11,14 +11,15 @@ import org.ssglobal.training.codes.model.PasswordRequest;
 public interface PasswordRequestRepository {
 
 	@Select("""
-			select p.id, p.status, p.emp_id, concat(u.first_name, ' ', u.last_name) as employee_name
+			select p.id, p.status, p.emp_id, concat(u.first_name, ' ', u.last_name) as employee_name, u.email
 			from password_requests p inner join users u on p.emp_id = u.employee_id;
 			""")
 	@Results(value = { 
 			@Result(property = "id", column = "id"), 
 			@Result(property = "status", column = "status"),
 			@Result(property = "empId", column = "emp_id"),
-			@Result(property = "employeeName", column = "employee_name"), })
+			@Result(property = "employeeName", column = "employee_name"),
+			@Result(property = "email", column = "email"), })
 	public List<PasswordRequest> getAllPasswordRequestsJoinByUsers();
 
 	@Insert(value = """
