@@ -3,14 +3,6 @@ create database users;
 
 \c users
 
-drop table if exists password_requests;
-create table password_requests (
-	id serial primary key,
-	emp_id int,
-	status varchar(20) default 'pending',
-	foreign key(emp_id) references users(employee_id) on delete cascade
-);
-
 drop table if exists departments;
 create table departments (
 	department_id int primary key,
@@ -53,6 +45,14 @@ create table users (
     position_id int,
     foreign key(dept_id) references departments(department_id) on delete set null,
     foreign key(position_id) references positions(position_id) on delete set null
+);
+
+drop table if exists password_requests;
+create table password_requests (
+	id serial primary key,
+	emp_id int,
+	status varchar(20) default 'pending',
+	foreign key(emp_id) references users(employee_id) on delete cascade
 );
 
 drop table if exists user_tokens;
