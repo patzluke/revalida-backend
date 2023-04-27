@@ -8,7 +8,9 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Result;
 import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.SelectProvider;
 import org.apache.ibatis.annotations.Update;
+import org.ssglobal.training.codes.MySecretKey;
 import org.ssglobal.training.codes.model.User;
 
 public interface UserRepository {
@@ -77,10 +79,7 @@ public interface UserRepository {
 	})
 	public User getUserById(Integer employeeId);
 	
-	@Select(value = """
-			select employee_id, email, user_type from users 
-			where email = #{email} and pgp_sym_decrypt(password::bytea, 'r3vaLid@') = #{password};
-			""")
+	@SelectProvider(type = MyPostgresQueriesWithSecretKey.class, method = "searchUserByEmailAndPassQuery")
 	@Results(value = {
 			@Result(property = "employeeId", column = "employee_id"),
 			@Result(property = "email", column = "email"),
@@ -88,10 +87,7 @@ public interface UserRepository {
 	})
 	public User searchUserByEmailAndPass(Map<String, String> parameter);
 	
-	@Select(value = """
-			select employee_id, pgp_sym_decrypt(password::bytea, 'r3vaLid@') as password 
-			from users where employee_id = #{employeeId};
-			""")
+	@Select(value = MyPostgresQueriesWithSecretKey.searchPasswordByIdQuery)
 	@Results(value = {
 			@Result(property = "employeeId", column = "employee_id"),
 			@Result(property = "password", column = "password"),
@@ -102,19 +98,40 @@ public interface UserRepository {
 	public boolean deleteUserById(Integer employeeId);
 	
 	@Update(value = """
-			update users set email = #{email}, mobile_number = #{mobileNumber}, user_type = #{userType}, 
-							 first_name = #{firstName}, middle_name = #{middleName}, last_name = #{lastName},
-							 dept_id = #{deptId}, birth_date = #{birthDate}, gender = #{gender},
+			update users set email = #{email}, mobile_number = #{mobileNumber}, user_type = initcap(#{userType}), 
+							 first_name = initcap(#{firstName}), middle_name = initcap(#{middleName}), last_name = initcap(#{lastName}),
+							 dept_id = #{deptId}, birth_date = #{birthDate}, gender = initcap(#{gender}),
 							 position_id = #{positionId} where employee_id = #{employeeId}
 			""")
 	public boolean updateUser(Map<String, Object> parameters);
 	
-	@Update(value = "update users set password = pgp_sym_encrypt(#{password}, 'r3vaLid@') where email = #{email}")
+	@Update(value = MyPostgresQueriesWithSecretKey.changePasswordQuery)
 	public boolean changePassword(Map<String, Object> parameters);
 	
-	@Insert(value = """
-			insert into users(email, mobile_number, password, user_type, first_name, middle_name, last_name, dept_id, birth_date, gender, position_id)
-			values(#{email}, #{mobileNumber}, pgp_sym_encrypt(#{password}, 'r3vaLid@'), #{userType}, #{firstName}, #{middleName}, #{lastName}, #{departmentId}, #{birthDate}, #{gender}, #{positionId})
-			""")
+	@Insert(value = MyPostgresQueriesWithSecretKey.insertUserQuery)
 	public boolean inserUser();
+	
+	
+	public static class MyPostgresQueriesWithSecretKey {
+		private static final MySecretKey secretKey = new MySecretKey();
+
+		public static final String searchUserByEmailAndPassQuery() {
+			return """
+			select employee_id, email, user_type from users 
+			where email = #{email} and pgp_sym_decrypt(password::bytea, '%s') = #{password}		
+			""".formatted(secretKey.getSecretKey());
+		}
+		public static final String searchPasswordByIdQuery = """
+				select employee_id, pgp_sym_decrypt(password::bytea, 'r3vaLid@') as password 
+				from users where employee_id = #{employeeId}
+				""";
+		public static final String changePasswordQuery = """
+				update users set password = pgp_sym_encrypt(#{password}, 'r3vaLid@') 
+				where email = #{email}
+				""";
+		public static final String insertUserQuery = """
+				insert into users(email, mobile_number, password, user_type, first_name, middle_name, last_name, dept_id, birth_date, gender, position_id)
+				values(#{email}, #{mobileNumber}, pgp_sym_encrypt(#{password}, 'r3vaLid@'), initcap(#{userType}), initcap((#{firstName}), initcap(#{middleName}), initcap(#{lastName}), #{departmentId}, #{birthDate}, initcap(#{gender}), #{positionId})
+				""";
+	}
 }

@@ -8,8 +8,8 @@ import org.apache.ibatis.annotations.Result;
 import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
-import org.ssglobal.training.codes.model.Department;
 import org.ssglobal.training.codes.model.PasswordRequest;
+
 
 public interface PasswordRequestRepository {
 
@@ -27,13 +27,13 @@ public interface PasswordRequestRepository {
 	public List<PasswordRequest> getAllPasswordRequestsJoinByUsers();
 
 	@Insert(value = """
-			insert into password_requests(emp_id) values(#{empId})
+			insert into password_requests(emp_id) values(initcap(#{empId}))
 			""")
 	public boolean insertPasswordRequest();
 	
 	@Update(value = """
 			update password_requests
-			set status = #{status}
+			set status = initcap(#{status})
 			where id = #{id}
 			""")
 	public boolean updateStatus(Map<String, Object> parameters);

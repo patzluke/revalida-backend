@@ -60,21 +60,21 @@ create table password_requests (
 drop table if exists user_tokens;
 create table user_tokens (
 	user_id int,
-	token varchar(200),
+	token varchar(250),
 	foreign key(user_id) references users(employee_id) on delete cascade
 );
 
 insert into departments(department_name) values ('IT');
 insert into departments(department_name) values ('HR');
 
-insert into positions(dept_id, position_name) values (1, 'DEVELOPER');
-insert into positions(dept_id, position_name) values (1, 'Programmer');
+insert into positions(dept_id, position_name) values (1, initcap('DEVELOPER'));
+insert into positions(dept_id, position_name) values (1, initcap('Programmer'));
 
 insert into users(email, mobile_number, password, user_type, first_name, middle_name, last_name, dept_id, birth_date, gender, position_id) 
-values('ally@gmail.com', '9178192726', pgp_sym_encrypt('123456', 'r3vaLid@'), 'admin', 'ally', 'artuz', 'astrero', 1, '2015-07-25', 'female', 1);
+values('ally@gmail.com', '9178192726', pgp_sym_encrypt('123456', 'r3vaLid@'), initcap('admin'), initcap('ally'), initcap('artuz'), initcap('astrero'), 1, '2015-07-25', initcap('female'), 1);
 
 insert into users(email, mobile_number, password, user_type, first_name, middle_name, last_name, dept_id, birth_date, gender, position_id) 
-values('patz@gmail.com', '9178192725', pgp_sym_encrypt('123456', 'r3vaLid@'), 'employee', 'patz', 'artuz', 'astrero', 1, '2015-07-25', 'female', 1);
+values('patz@gmail.com', '9178192725', pgp_sym_encrypt('123456', 'r3vaLid@'), initcap('employee'), initcap('patz'), initcap('artuz'), initcap('astrero'), 1, '2015-07-25', initcap('female'), 1);
 
 CREATE OR REPLACE FUNCTION set_dept_id_to_zero()
 RETURNS TRIGGER AS $$

@@ -63,13 +63,13 @@ public interface PositionRepository {
 	public boolean deletePosById(Integer positionId);
 	
 	@Update(value = """
-			update positions set dept_id = #{departmentId}, position_name = #{positionName} 
+			update positions set dept_id = #{departmentId}, position_name = initcap(#{positionName}) 
 			where position_id = #{positionId}
 			""")
 	public boolean updatePosition(Map<String, Object> parameters);
 	
 	@Insert(value = """
-			insert into positions(dept_id, position_name) values (#{departmentId}, #{positionName})
+			insert into positions(dept_id, position_name) values (initcap(#{departmentId}), initcap(#{positionName}))
 			""")
 	public boolean insertPosition();
 }
