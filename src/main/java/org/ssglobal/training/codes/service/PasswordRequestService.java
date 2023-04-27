@@ -4,9 +4,7 @@ import static org.ssglobal.training.codes.RepositoryImplConn.passwordRequestRepo
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
-import org.ssglobal.training.codes.cors.MyCorsFilter;
 import org.ssglobal.training.codes.cors.Secured;
 import org.ssglobal.training.codes.model.PasswordRequest;
 
@@ -45,7 +43,6 @@ public class PasswordRequestService {
 		}
 		return Response.status(Status.INTERNAL_SERVER_ERROR).build();
 	}
-	private static Logger logger = Logger.getLogger(MyCorsFilter.class.getName());
 
 	@POST
 	@Secured

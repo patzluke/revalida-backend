@@ -2,8 +2,6 @@ package org.ssglobal.training.codes.service;
 
 import static org.ssglobal.training.codes.RepositoryImplConn.userTokenRepositoryImpl;
 
-import org.ssglobal.training.codes.cors.Secured;
-
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.Path;

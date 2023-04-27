@@ -21,6 +21,7 @@ import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.GenericEntity;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -28,7 +29,6 @@ import jakarta.ws.rs.core.Response.Status;
 
 @Path("/users")
 public class UserService {
-	private static Logger logger = Logger.getLogger(MyCorsFilter.class.getName());
 
 	@GET
 	@Secured
@@ -39,6 +39,27 @@ public class UserService {
 		GenericEntity<List<User>> listUsers = null;
 		try {
 			users = userRepositoryImpl().selectUsersInnerJoinDepartmentAndPositionImpl();
+			if (users != null) {
+				listUsers = new GenericEntity<>(users) {
+				};
+				return Response.ok(listUsers).build();
+			}
+			return Response.status(Status.NO_CONTENT).build();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return Response.status(Status.INTERNAL_SERVER_ERROR).build();
+	}
+
+	@GET
+	@Secured
+	@Path("/get/query")
+	@Produces(value = { MediaType.APPLICATION_JSON })
+	public Response searchUsersInnerJoinDepartmentAndPositionUsingLike(@QueryParam(value = "search") String search) {
+		List<User> users = new ArrayList<>();
+		GenericEntity<List<User>> listUsers = null;
+		try {
+			users = userRepositoryImpl().searchUsersInnerJoinDepartmentAndPositionUsingLikeImpl(search);
 			if (users != null) {
 				listUsers = new GenericEntity<>(users) {
 				};

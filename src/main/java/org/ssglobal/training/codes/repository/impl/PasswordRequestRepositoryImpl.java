@@ -7,7 +7,6 @@ import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
-import org.ssglobal.training.codes.model.Department;
 import org.ssglobal.training.codes.model.PasswordRequest;
 
 public class PasswordRequestRepositoryImpl {

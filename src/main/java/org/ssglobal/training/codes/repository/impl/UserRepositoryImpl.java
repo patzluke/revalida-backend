@@ -58,6 +58,26 @@ public class UserRepositoryImpl {
 		return new ArrayList<>();
 	}
 	
+	public List<User> searchUsersInnerJoinDepartmentAndPositionUsingLikeImpl(String search) {
+		List<User> records = new ArrayList<>();
+		SqlSession session = null;
+		try {
+			session = ssf.openSession();
+			HashMap<String, String> dataMap = new HashMap<>();
+			dataMap.put("search", search);
+			records = session.selectList("searchUsersInnerJoinDepartmentAndPositionUsingLike", dataMap);
+			
+			session.close();
+			return Collections.unmodifiableList(records);
+		} catch (Exception e) {
+			session.rollback();
+			e.printStackTrace();
+		} finally {
+			session.close();
+		}
+		return Collections.unmodifiableList(records);
+	}
+	
 	public User getUserByIdImpl(Integer employeeId) {
 		SqlSession session = null;
 		try {

@@ -69,7 +69,7 @@ public interface PositionRepository {
 	public boolean updatePosition(Map<String, Object> parameters);
 	
 	@Insert(value = """
-			insert into positions(dept_id, position_name) values (initcap(#{departmentId}), initcap(#{positionName}))
+			insert into positions(dept_id, position_name) values (#{departmentId}, initcap(#{positionName}))
 			""")
 	public boolean insertPosition();
 }
