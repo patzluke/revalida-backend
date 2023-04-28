@@ -143,7 +143,7 @@ public interface UserRepository {
 		public static final String insertUserQuery() {
 			return """
 					insert into users(email, mobile_number, password, user_type, first_name, middle_name, last_name, dept_id, birth_date, gender, position_id)
-					values(#{email}, #{mobileNumber}, pgp_sym_encrypt(#{password}, '%s'), initcap(#{userType}), initcap((#{firstName}), initcap(#{middleName}), initcap(#{lastName}), #{departmentId}, #{birthDate}, initcap(#{gender}), #{positionId})
+					values(#{email}, #{mobileNumber}, pgp_sym_encrypt(#{password}, '%s'), initcap(#{userType}), initcap(#{firstName}), initcap(#{middleName}), initcap(#{lastName}), #{departmentId}, #{birthDate}, initcap(#{gender}), #{positionId})
 					"""
 					.formatted(secretKey.getSecretKey());
 		}

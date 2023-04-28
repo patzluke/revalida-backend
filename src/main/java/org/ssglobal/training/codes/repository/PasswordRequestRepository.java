@@ -27,7 +27,7 @@ public interface PasswordRequestRepository {
 	public List<PasswordRequest> getAllPasswordRequestsJoinByUsers();
 
 	@Insert(value = """
-			insert into password_requests(emp_id) values(initcap(#{empId}))
+			insert into password_requests(emp_id) values(#{empId})
 			""")
 	public boolean insertPasswordRequest();
 	
