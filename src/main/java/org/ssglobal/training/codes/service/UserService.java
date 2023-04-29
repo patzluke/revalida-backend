@@ -5,9 +5,7 @@ import static org.ssglobal.training.codes.RepositoryImplConn.userRepositoryImpl;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
-import org.ssglobal.training.codes.cors.MyCorsFilter;
 import org.ssglobal.training.codes.cors.Secured;
 import org.ssglobal.training.codes.model.User;
 import org.ssglobal.training.codes.model.UserLogin;
