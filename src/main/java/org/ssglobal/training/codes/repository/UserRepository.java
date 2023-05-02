@@ -22,6 +22,7 @@ public interface UserRepository {
 				  	   p.position_name, u.dept_id, u.position_id from users u
 				  	   inner join departments d on u.dept_id = d.department_id
 				  	   inner join positions p on u.position_id = p.position_id
+				  	   order by employee_id
 			""")
 	@Results(value = { @Result(property = "employeeId", column = "employee_id"),
 			@Result(property = "email", column = "email"), @Result(property = "mobileNumber", column = "mobile_number"),

@@ -15,7 +15,6 @@ drop sequence if exists departments_sequence;
 create sequence departments_sequence as int increment by 1 start with 1;
 alter table departments alter column department_id set default nextval('departments_sequence');
 
-
 drop table if exists positions;
 create table positions (
 	position_id int primary key,

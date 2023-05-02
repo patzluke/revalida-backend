@@ -66,7 +66,7 @@ public class RepositoryImplConn {
 							  .claim("username", username)
 							  .claim("userType", userType)
 							  .setIssuedAt(new Date())
-							  .setExpiration(Date.from(LocalDateTime.now().plusMinutes(1L).atZone(ZoneId.systemDefault()).toInstant()))
+							  .setExpiration(Date.from(LocalDateTime.now().plusMinutes(10L).atZone(ZoneId.systemDefault()).toInstant()))
 							  .signWith(key, SignatureAlgorithm.HS256)
 							  .compact();
 		if (userTokenRepositoryImpl().isUserTokenIdExistsImpl(userId)) {
