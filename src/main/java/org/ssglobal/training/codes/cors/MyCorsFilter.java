@@ -36,7 +36,7 @@ public class MyCorsFilter implements ContainerResponseFilter, ContainerRequestFi
 			UriInfo uriInfo = requestContext.getUriInfo();
 			String authorizationHeader = requestContext.getHeaderString(HttpHeaders.AUTHORIZATION);
 			if (uriInfo.getPath().endsWith("users/authenticate") || uriInfo.getPath().endsWith("passwordrequest/insert")) {
-				
+				//ignores two urls above
 			} else {
 				if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
 					requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).build());
@@ -48,7 +48,7 @@ public class MyCorsFilter implements ContainerResponseFilter, ContainerRequestFi
 				}
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.severe("MyCorsFilter Line 51 exception: %s".formatted(e.getMessage()));
 			requestContext.abortWith(Response.status(Response.Status.INTERNAL_SERVER_ERROR).build());
 		}
 	}
@@ -79,13 +79,13 @@ public class MyCorsFilter implements ContainerResponseFilter, ContainerRequestFi
 				userTokenRepositoryImpl().deleteUserTokenImpl(userId);
 			}
 		} catch (JsonMappingException e) {
-			e.printStackTrace();
+			logger.severe("MyCorsFilter Line 82 exception: %s".formatted(e.getMessage()));
 		} catch (JsonProcessingException e) {
-			e.printStackTrace();
+			logger.severe("MyCorsFilter Line 84 exception: %s".formatted(e.getMessage()));
 		} catch (ArrayIndexOutOfBoundsException e) {
-			e.printStackTrace();
+			logger.severe("MyCorsFilter Line 86 exception: %s".formatted(e.getMessage()));
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.severe("MyCorsFilter Line 88 exception: %s".formatted(e.getMessage()));
 		}
 		return false;
 	}

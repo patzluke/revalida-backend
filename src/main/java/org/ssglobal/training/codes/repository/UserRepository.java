@@ -116,6 +116,7 @@ public interface UserRepository {
 	@InsertProvider(type = MyPostgresQueriesWithSecretKey.class, method = "insertUserQuery")
 	public boolean inserUser();
 
+	//--------------------QUERY PROVIDERS
 	public static class MyPostgresQueriesWithSecretKey {
 		private static final MySecretKey secretKey = new MySecretKey();
 

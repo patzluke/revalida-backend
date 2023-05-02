@@ -4,6 +4,7 @@ import static org.ssglobal.training.codes.RepositoryImplConn.positionRepoImpl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import org.ssglobal.training.codes.cors.Secured;
 import org.ssglobal.training.codes.model.Position;
@@ -23,6 +24,7 @@ import jakarta.ws.rs.core.Response.Status;
 
 @Path("/positions")
 public class PositionService {
+	private static Logger logger = Logger.getLogger(PositionService.class.getName());
 
 	@GET
 	@Secured
@@ -40,7 +42,7 @@ public class PositionService {
 			}
 			return Response.status(Status.NO_CONTENT).build();
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.severe("PositionService Line 45 exception: %s".formatted(e.getMessage()));
 		}
 		return Response.status(Status.INTERNAL_SERVER_ERROR).build();
 	}
@@ -57,7 +59,7 @@ public class PositionService {
 			}
 			return Response.status(Status.NOT_FOUND.getStatusCode(), "invalid employee ID").build();
 		} catch (Exception e) {
-			e.getMessage();
+			logger.severe("PositionService Line 62 exception: %s".formatted(e.getMessage()));
 		}
 		return Response.status(Status.INTERNAL_SERVER_ERROR).build();
 	}
@@ -78,7 +80,7 @@ public class PositionService {
 			}
 			return Response.status(Status.NO_CONTENT).build();
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.severe("PositionService Line 83 exception: %s".formatted(e.getMessage()));
 		}
 		return Response.status(Status.INTERNAL_SERVER_ERROR).build();
 	}
@@ -96,7 +98,7 @@ public class PositionService {
 			}
 			return Response.status(404, "invalid department ID").build();
 		} catch (Exception e) {
-			e.getMessage();
+			logger.severe("PositionService Line 101 exception: %s".formatted(e.getMessage()));
 		}
 		return Response.status(Status.INTERNAL_SERVER_ERROR).build();
 	}
@@ -113,7 +115,7 @@ public class PositionService {
 			}
 			return Response.status(Status.BAD_REQUEST).build();
 		} catch (Exception e) {
-			e.getMessage();
+			logger.severe("PositionService Line 118 exception: %s".formatted(e.getMessage()));
 		}
 		return Response.status(Status.INTERNAL_SERVER_ERROR).build();
 	}
@@ -132,7 +134,7 @@ public class PositionService {
 			}
 			return Response.status(Status.BAD_REQUEST).build();
 		} catch (Exception e) {
-			e.getMessage();
+			logger.severe("PositionService Line 137 exception: %s".formatted(e.getMessage()));
 		}
 		return Response.status(Status.INTERNAL_SERVER_ERROR).build();
 	}

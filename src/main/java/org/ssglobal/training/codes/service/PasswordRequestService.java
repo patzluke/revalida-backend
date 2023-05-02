@@ -4,6 +4,7 @@ import static org.ssglobal.training.codes.RepositoryImplConn.passwordRequestRepo
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import org.ssglobal.training.codes.cors.Secured;
 import org.ssglobal.training.codes.model.PasswordRequest;
@@ -22,6 +23,7 @@ import jakarta.ws.rs.core.Response.Status;
 
 @Path("/passwordrequest")
 public class PasswordRequestService {
+	private static Logger logger = Logger.getLogger(PasswordRequestService.class.getName());
 
 	@GET
 	@Secured
@@ -39,7 +41,7 @@ public class PasswordRequestService {
 			}
 			return Response.status(Status.NO_CONTENT).build();
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.severe("PasswordRequestService Line 44 exception: %s".formatted(e.getMessage()));
 		}
 		return Response.status(Status.INTERNAL_SERVER_ERROR).build();
 	}
@@ -57,7 +59,7 @@ public class PasswordRequestService {
 			}
 			return Response.status(Status.BAD_REQUEST).build();
 		} catch (Exception e) {
-			e.getMessage();
+			logger.severe("PasswordRequestService Line 62 exception: %s".formatted(e.getMessage()));
 		}
 		return Response.status(Status.INTERNAL_SERVER_ERROR).build();
 	}
@@ -74,7 +76,7 @@ public class PasswordRequestService {
 			}
 			return Response.status(Status.BAD_REQUEST).build();
 		} catch (Exception e) {
-			e.getMessage();
+			logger.severe("PasswordRequestService Line 79 exception: %s".formatted(e.getMessage()));
 		}
 		return Response.status(Status.INTERNAL_SERVER_ERROR).build();
 	}
@@ -91,7 +93,7 @@ public class PasswordRequestService {
 			}
 			return Response.status(Status.NOT_FOUND.getStatusCode(), "invalid request ID").build();
 		} catch (Exception e) {
-			e.getMessage();
+			logger.severe("PasswordRequestService Line 96 exception: %s".formatted(e.getMessage()));
 		}
 		return Response.status(Status.INTERNAL_SERVER_ERROR).build();
 	}

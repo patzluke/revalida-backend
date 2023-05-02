@@ -1,12 +1,14 @@
 package org.ssglobal.training.codes.repository.impl;
 
 import java.util.HashMap;
+import java.util.logging.Logger;
 
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.ssglobal.training.codes.model.UserToken;
 
 public class UserTokenRepositoryImpl {
+	private static Logger logger = Logger.getLogger(UserTokenRepositoryImpl.class.getName());
 	private SqlSessionFactory ssf;
 
 	public UserTokenRepositoryImpl(SqlSessionFactory ssf) {
@@ -28,7 +30,7 @@ public class UserTokenRepositoryImpl {
 			return true;
 		} catch (Exception e) {
 			session.rollback();
-			e.printStackTrace();
+			logger.severe("UserTokenRepositoryImpl Line 33 exception: %s".formatted(e.getMessage()));
 		} finally {
 			session.close();
 		}
@@ -50,7 +52,7 @@ public class UserTokenRepositoryImpl {
 			return true;
 		} catch (Exception e) {
 			session.rollback();
-			e.printStackTrace();
+			logger.severe("UserTokenRepositoryImpl Line 55 exception: %s".formatted(e.getMessage()));
 		} finally {
 			session.close();
 		}
@@ -69,7 +71,7 @@ public class UserTokenRepositoryImpl {
 			return true;
 		} catch (Exception e) {
 			session.rollback();
-			e.printStackTrace();
+			logger.severe("UserTokenRepositoryImpl Line 74 exception: %s".formatted(e.getMessage()));
 		} finally {
 			session.close();
 		}
@@ -89,7 +91,7 @@ public class UserTokenRepositoryImpl {
 			}
 		} catch (Exception e) {
 			session.rollback();
-			e.printStackTrace();
+			logger.severe("UserTokenRepositoryImpl Line 94 exception: %s".formatted(e.getMessage()));
 		} finally {
 			session.close();
 		}
@@ -109,7 +111,7 @@ public class UserTokenRepositoryImpl {
 			}
 		} catch (Exception e) {
 			session.rollback();
-			e.printStackTrace();
+			logger.severe("UserTokenRepositoryImpl Line 114 exception: %s".formatted(e.getMessage()));
 		} finally {
 			session.close();
 		}

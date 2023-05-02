@@ -4,12 +4,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.logging.Logger;
 
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.ssglobal.training.codes.model.PasswordRequest;
 
 public class PasswordRequestRepositoryImpl {
+	private static Logger logger = Logger.getLogger(PasswordRequestRepositoryImpl.class.getName());
 	private SqlSessionFactory ssf;
 
 	public PasswordRequestRepositoryImpl(SqlSessionFactory ssf) {
@@ -29,7 +31,7 @@ public class PasswordRequestRepositoryImpl {
 			return Collections.unmodifiableList(records);
 		} catch(Exception e) {
 			session.rollback();
-			e.printStackTrace();
+			logger.severe("PasswordRequestRepositoryImpl Line 34 exception: %s".formatted(e.getMessage()));
 		} finally {
 			session.close();
 		}
@@ -49,7 +51,7 @@ public class PasswordRequestRepositoryImpl {
 			return true;
 		} catch (Exception e) {
 			session.rollback();
-			e.printStackTrace();
+			logger.severe("PasswordRequestRepositoryImpl Line 54 exception: %s".formatted(e.getMessage()));
 		} finally {
 			session.close();
 		}
@@ -72,11 +74,10 @@ public class PasswordRequestRepositoryImpl {
 			return true;
 		} catch(Exception e) {
 			session.rollback();
-			e.printStackTrace();
+			logger.severe("PasswordRequestRepositoryImpl Line 77 exception: %s".formatted(e.getMessage()));
 		} finally {
 			session.close();
 		}
-		
 		return false;
 	}
 	
@@ -91,7 +92,7 @@ public class PasswordRequestRepositoryImpl {
 			return record;
 		} catch (Exception e) {
 			session.rollback();
-			e.printStackTrace();
+			logger.severe("PasswordRequestRepositoryImpl Line 95 exception: %s".formatted(e.getMessage()));
 		} finally {
 			session.close();
 		}

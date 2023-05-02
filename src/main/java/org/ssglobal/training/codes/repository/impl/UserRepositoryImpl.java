@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.logging.Logger;
 
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -12,7 +13,7 @@ import org.ssglobal.training.codes.model.User;
 import org.ssglobal.training.codes.model.UserPasswordChange;
 
 public class UserRepositoryImpl {
-	
+	private static Logger logger = Logger.getLogger(UserRepositoryImpl.class.getName());
 	private SqlSessionFactory ssf;
 
 	public UserRepositoryImpl(SqlSessionFactory ssf) {
@@ -31,7 +32,7 @@ public class UserRepositoryImpl {
 			return Collections.unmodifiableList(records);
 		} catch (Exception e) {
 			session.rollback();
-			e.printStackTrace();
+			logger.severe("UserRepositoryImpl Line 35 exception: %s".formatted(e.getMessage()));
 		} finally {
 			session.close();
 		}
@@ -51,7 +52,7 @@ public class UserRepositoryImpl {
 			return Collections.unmodifiableList(records);
 		} catch(Exception e) {
 			session.rollback();
-			e.printStackTrace();
+			logger.severe("UserRepositoryImpl Line 55 exception: %s".formatted(e.getMessage()));
 		} finally {
 			session.close();
 		}
@@ -71,7 +72,7 @@ public class UserRepositoryImpl {
 			return Collections.unmodifiableList(records);
 		} catch (Exception e) {
 			session.rollback();
-			e.printStackTrace();
+			logger.severe("UserRepositoryImpl Line 75 exception: %s".formatted(e.getMessage()));
 		} finally {
 			session.close();
 		}
@@ -89,7 +90,7 @@ public class UserRepositoryImpl {
 			return record;
 		} catch (Exception e) {
 			session.rollback();
-			e.printStackTrace();
+			logger.severe("UserRepositoryImpl Line 93 exception: %s".formatted(e.getMessage()));
 		} finally {
 			session.close();
 		}
@@ -110,7 +111,7 @@ public class UserRepositoryImpl {
 			return record;
 		} catch (Exception e) {
 			session.rollback();
-			e.printStackTrace();
+			logger.severe("UserRepositoryImpl Line 114 exception: %s".formatted(e.getMessage()));
 		} finally {
 			session.close();
 		}
@@ -127,7 +128,7 @@ public class UserRepositoryImpl {
 			return record;
 		} catch (Exception e) {
 			session.rollback();
-			e.printStackTrace();
+			logger.severe("UserRepositoryImpl Line 131 exception: %s".formatted(e.getMessage()));
 		} finally {
 			session.close();
 		}
@@ -146,7 +147,7 @@ public class UserRepositoryImpl {
 			return true;
 		} catch (Exception e) {
 			session.rollback();
-			e.printStackTrace();
+			logger.severe("UserRepositoryImpl Line 150 exception: %s".formatted(e.getMessage()));
 		} finally {
 			session.close();
 		}
@@ -178,7 +179,7 @@ public class UserRepositoryImpl {
 			return true;
 		} catch (Exception e) {
 			session.rollback();
-			e.printStackTrace();
+			logger.severe("UserRepositoryImpl Line 181 exception: %s".formatted(e.getMessage()));
 		} finally {
 			session.close();
 		}
@@ -224,7 +225,7 @@ public class UserRepositoryImpl {
 			return true;
 		} catch (Exception e) {
 			session.rollback();
-			e.printStackTrace();
+			logger.severe("UserRepositoryImpl Line 228 exception: %s".formatted(e.getMessage()));
 		} finally {
 			session.close();
 		}

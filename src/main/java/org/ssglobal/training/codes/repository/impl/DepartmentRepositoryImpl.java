@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.logging.Logger;
 
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -12,7 +13,7 @@ import org.ssglobal.training.codes.model.Department;
 
 
 public class DepartmentRepositoryImpl {
-	
+	private static Logger logger = Logger.getLogger(DepartmentRepositoryImpl.class.getName());
 	private SqlSessionFactory ssf;
 	
 	public DepartmentRepositoryImpl(SqlSessionFactory ssf) {
@@ -32,7 +33,7 @@ public class DepartmentRepositoryImpl {
 			return Collections.unmodifiableList(records);
 		} catch(Exception e) {
 			session.rollback();
-			e.printStackTrace();
+			logger.severe("DepartmentRepositoryImpl Line 36 exception: %s".formatted(e.getMessage()));
 		} finally {
 			session.close();
 		}
@@ -50,7 +51,7 @@ public class DepartmentRepositoryImpl {
 			return record;
 		} catch (Exception e) {
 			session.rollback();
-			e.printStackTrace();
+			logger.severe("DepartmentRepositoryImpl Line 54 exception: %s".formatted(e.getMessage()));
 		} finally {
 			session.close();
 		}
@@ -69,7 +70,7 @@ public class DepartmentRepositoryImpl {
 			return true;
 		} catch (Exception e) {
 			session.rollback();
-			e.printStackTrace();
+			logger.severe("DepartmentRepositoryImpl Line 73 exception: %s".formatted(e.getMessage()));
 		} finally {
 			session.close();
 		}
@@ -92,7 +93,7 @@ public class DepartmentRepositoryImpl {
 			return true;
 		} catch (Exception e) {
 			session.rollback();
-			e.printStackTrace();
+			logger.severe("DepartmentRepositoryImpl Line 96 exception: %s".formatted(e.getMessage()));
 		} finally {
 			session.close();
 		}
@@ -112,12 +113,10 @@ public class DepartmentRepositoryImpl {
 			return true;
 		} catch (Exception e) {
 			session.rollback();
-			e.printStackTrace();
+			logger.severe("DepartmentRepositoryImpl Line 116 exception: %s".formatted(e.getMessage()));
 		} finally {
 			session.close();
 		}
 		return false;
 	}
-	
-
 }

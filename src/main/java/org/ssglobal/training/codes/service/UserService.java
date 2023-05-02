@@ -5,6 +5,7 @@ import static org.ssglobal.training.codes.RepositoryImplConn.userRepositoryImpl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import org.ssglobal.training.codes.cors.Secured;
 import org.ssglobal.training.codes.model.User;
@@ -27,6 +28,7 @@ import jakarta.ws.rs.core.Response.Status;
 
 @Path("/users")
 public class UserService {
+	private static Logger logger = Logger.getLogger(UserService.class.getName());
 
 	@GET
 	@Secured
@@ -44,7 +46,7 @@ public class UserService {
 			}
 			return Response.status(Status.NO_CONTENT).build();
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.severe("UserService Line 49 exception: %s".formatted(e.getMessage()));
 		}
 		return Response.status(Status.INTERNAL_SERVER_ERROR).build();
 	}
@@ -65,7 +67,7 @@ public class UserService {
 			}
 			return Response.status(Status.NO_CONTENT).build();
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.severe("UserService Line 70 exception: %s".formatted(e.getMessage()));
 		}
 		return Response.status(Status.INTERNAL_SERVER_ERROR).build();
 	}
@@ -82,7 +84,7 @@ public class UserService {
 			}
 			return Response.status(Status.NOT_FOUND.getStatusCode(), "invalid employee ID").build();
 		} catch (Exception e) {
-			e.getMessage();
+			logger.severe("UserService Line 87 exception: %s".formatted(e.getMessage()));
 		}
 		return Response.status(Status.INTERNAL_SERVER_ERROR).build();
 	}
@@ -100,7 +102,7 @@ public class UserService {
 			}
 			return Response.status(Status.NOT_FOUND).build();
 		} catch (Exception e) {
-			e.getMessage();
+			logger.severe("UserService Line 105 exception: %s".formatted(e.getMessage()));
 		}
 		return Response.status(Status.INTERNAL_SERVER_ERROR).build();
 	}
@@ -122,7 +124,7 @@ public class UserService {
 			}
 			return Response.status(Response.Status.UNAUTHORIZED).build();
 		} catch (Exception e) {
-			e.getMessage();
+			logger.severe("UserService Line 127 exception: %s".formatted(e.getMessage()));
 		}
 		return Response.status(Status.INTERNAL_SERVER_ERROR).build();
 	}
@@ -140,7 +142,7 @@ public class UserService {
 			}
 			return Response.status(Status.NOT_FOUND.getStatusCode(), "invalid employee ID").build();
 		} catch (Exception e) {
-			e.getMessage();
+			logger.severe("UserService Line 145 exception: %s".formatted(e.getMessage()));
 		}
 		return Response.status(Status.INTERNAL_SERVER_ERROR).build();
 	}
@@ -157,7 +159,7 @@ public class UserService {
 			}
 			return Response.status(Status.BAD_REQUEST).build();
 		} catch (Exception e) {
-			e.getMessage();
+			logger.severe("UserService Line 162 exception: %s".formatted(e.getMessage()));
 		}
 		return Response.status(Status.INTERNAL_SERVER_ERROR).build();
 	}
@@ -174,7 +176,7 @@ public class UserService {
 			}
 			return Response.status(Status.BAD_REQUEST).build();
 		} catch (Exception e) {
-			e.getMessage();
+			logger.severe("UserService Line 179 exception: %s".formatted(e.getMessage()));
 		}
 		return Response.status(Status.INTERNAL_SERVER_ERROR).build();
 	}
@@ -195,7 +197,7 @@ public class UserService {
 			}
 			return Response.status(Status.BAD_REQUEST).build();
 		} catch (Exception e) {
-			e.getMessage();
+			logger.severe("UserService Line 200 exception: %s".formatted(e.getMessage()));
 		}
 		return Response.status(Status.INTERNAL_SERVER_ERROR).build();
 	}

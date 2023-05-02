@@ -1,5 +1,7 @@
 package org.ssglobal.training.codes;
 
+import java.util.logging.Logger;
+
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.apache.ibatis.mapping.Environment;
 import org.apache.ibatis.session.Configuration;
@@ -7,7 +9,6 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.apache.ibatis.transaction.jdbc.JdbcTransactionFactory;
 import org.apache.ibatis.type.TypeAliasRegistry;
-
 import org.ssglobal.training.codes.model.Department;
 import org.ssglobal.training.codes.model.PasswordRequest;
 import org.ssglobal.training.codes.model.Position;
@@ -20,6 +21,7 @@ import org.ssglobal.training.codes.repository.UserRepository;
 import org.ssglobal.training.codes.repository.UserTokenRepository;
 
 public class DbConnection {
+	private static Logger logger = Logger.getLogger(DbConnection.class.getName());
 	private BasicDataSource ds;
 	private JdbcTransactionFactory tx;
 	private Configuration config;
@@ -34,7 +36,7 @@ public class DbConnection {
 			ds.setPassword(password);
 			return true;
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.severe("DbConnection Line 39 exception: %s".formatted(e.getMessage()));
 		}
 		return false;
 	}
@@ -45,7 +47,7 @@ public class DbConnection {
 			tx = new JdbcTransactionFactory();
 			return true;
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.severe("DbConnection Line 50 exception: %s".formatted(e.getMessage()));
 		}
 		return false;
 	}
@@ -73,7 +75,7 @@ public class DbConnection {
 			config.addMapper(PasswordRequestRepository.class);
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.severe("DbConnection Line 78 exception: %s".formatted(e.getMessage()));
 		}
 		return false;
 	}
@@ -84,7 +86,7 @@ public class DbConnection {
 			SqlSessionFactoryBuilder sfBuilder = new SqlSessionFactoryBuilder();
 			return sfBuilder.build(config);
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.severe("DbConnection Line 89 exception: %s".formatted(e.getMessage()));
 		}
 		return null;
 	}

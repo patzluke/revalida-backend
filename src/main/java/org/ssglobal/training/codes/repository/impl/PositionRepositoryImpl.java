@@ -4,13 +4,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.logging.Logger;
 
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.ssglobal.training.codes.model.Position;
 
 public class PositionRepositoryImpl {
-	
+	private static Logger logger = Logger.getLogger(PositionRepositoryImpl.class.getName());
 	private SqlSessionFactory ssf;
 	
 	public PositionRepositoryImpl(SqlSessionFactory ssf) {
@@ -30,7 +31,7 @@ public class PositionRepositoryImpl {
 			return Collections.unmodifiableList(records);
 		} catch(Exception e) {
 			session.rollback();
-			e.printStackTrace();
+			logger.severe("PositionRepositoryImpl Line 34 exception: %s".formatted(e.getMessage()));
 		} finally {
 			session.close();
 		}
@@ -50,7 +51,7 @@ public class PositionRepositoryImpl {
 			return Collections.unmodifiableList(records);
 		} catch(Exception e) {
 			session.rollback();
-			e.printStackTrace();
+			logger.severe("PositionRepositoryImpl Line 54 exception: %s".formatted(e.getMessage()));
 		} finally {
 			session.close();
 		}
@@ -68,7 +69,7 @@ public class PositionRepositoryImpl {
 			return record;
 		} catch (Exception e) {
 			session.rollback();
-			e.printStackTrace();
+			logger.severe("PositionRepositoryImpl Line 72 exception: %s".formatted(e.getMessage()));
 		} finally {
 			session.close();
 		}
@@ -88,7 +89,7 @@ public class PositionRepositoryImpl {
 			return Collections.unmodifiableList(records);
 		} catch(Exception e) {
 			session.rollback();
-			e.printStackTrace();
+			logger.severe("PositionRepositoryImpl Line 92 exception: %s".formatted(e.getMessage()));
 		} finally {
 			session.close();
 		}

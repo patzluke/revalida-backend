@@ -4,6 +4,7 @@ import static org.ssglobal.training.codes.RepositoryImplConn.departmentRepoImpl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import org.ssglobal.training.codes.cors.Secured;
 import org.ssglobal.training.codes.model.Department;
@@ -23,6 +24,7 @@ import jakarta.ws.rs.core.Response.Status;
 
 @Path("/departments")
 public class DepartmentService {
+	private static Logger logger = Logger.getLogger(DepartmentService.class.getName());
 
 	@GET
 	@Secured
@@ -40,7 +42,7 @@ public class DepartmentService {
 			}
 			return Response.status(Status.NO_CONTENT).build();
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.severe("DepartmentService Line 45 exception: %s".formatted(e.getMessage()));
 		}
 		return Response.status(Status.INTERNAL_SERVER_ERROR).build();
 	}
@@ -57,7 +59,7 @@ public class DepartmentService {
 			}
 			return Response.status(Status.NOT_FOUND.getStatusCode(), "invalid employee ID").build();
 		} catch (Exception e) {
-			e.getMessage();
+			logger.severe("DepartmentService Line 62 exception: %s".formatted(e.getMessage()));
 		}
 		return Response.status(Status.INTERNAL_SERVER_ERROR).build();
 	}
@@ -75,7 +77,7 @@ public class DepartmentService {
 			}
 			return Response.status(404, "invalid department ID").build();
 		} catch (Exception e) {
-			e.getMessage();
+			logger.severe("DepartmentService Line 80 exception: %s".formatted(e.getMessage()));
 		}
 		return Response.status(Status.INTERNAL_SERVER_ERROR).build();
 	}
@@ -92,7 +94,7 @@ public class DepartmentService {
 			}
 			return Response.status(Status.BAD_REQUEST).build();
 		} catch (Exception e) {
-			e.getMessage();
+			logger.severe("DepartmentService Line 97 exception: %s".formatted(e.getMessage()));
 		}
 		return Response.status(Status.INTERNAL_SERVER_ERROR).build();
 	}
@@ -110,7 +112,7 @@ public class DepartmentService {
 			}
 			return Response.status(Status.BAD_REQUEST).build();
 		} catch (Exception e) {
-			e.getMessage();
+			logger.severe("DepartmentService Line 115 exception: %s".formatted(e.getMessage()));
 		}
 		return Response.status(Status.INTERNAL_SERVER_ERROR).build();
 	}
