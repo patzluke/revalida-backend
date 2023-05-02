@@ -57,6 +57,10 @@ public interface UserRepository {
 				  	   or lower(first_name) like concat('%', lower(#{search}), '%')
 				  	   or lower(middle_name) like concat('%', lower(#{search}), '%')
 				  	   or lower(last_name) like concat('%', lower(#{search}), '%')
+				  	   or lower(d.department_name) like concat('%', lower(#{search}), '%')
+				  	   or lower(p.position_name) like concat('%', lower(#{search}), '%')
+				  	   or lower(email) like concat('%', lower(#{search}), '%')
+
 			""")
 	@Results(value = { @Result(property = "employeeId", column = "employee_id"),
 			@Result(property = "email", column = "email"), @Result(property = "mobileNumber", column = "mobile_number"),
